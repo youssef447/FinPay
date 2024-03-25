@@ -1,20 +1,18 @@
 # finpay
 
 Demo <br></br>
+<img src="https://github.com/youssef447/FinPay/assets/71401039/5df142b2-f0dc-4b27-aa4b-b0bc056c347a" width= "200" height="400">
 
-<img src="https://github.com/youssef447/FinPay/assets/71401039/fc4e7e73-827e-435e-8b28-d75294b9ab16" width= "200" height="400">
-
-
-<img src="https://github.com/youssef447/FinPay/assets/71401039/cba29f3e-7a7e-435f-a270-fed1fbe7c700" width= "200" height="400">
-
+<img src="https://github.com/youssef447/FinPay/assets/71401039/75760c33-ca38-4e86-9f39-4e5150e891f3" width= "200" height="400">
+<img src="https://github.com/youssef447/FinPay/assets/71401039/bd53bd8e-882a-42d8-9c02-24a41da2eb09" width= "200" height="400">
 <img src="https://github.com/youssef447/FinPay/assets/71401039/1a5bdbc2-3cf0-443a-aacc-cd0bc6d1e312" width= "200" height="400">
 <img src="https://github.com/youssef447/FinPay/assets/71401039/00405be7-e7c3-4e40-9f2b-b1ce96081ce5" width= "200" height="400">
 <img src="https://github.com/youssef447/FinPay/assets/71401039/df053088-3a2c-431c-a23e-60b459361dbf" width= "200" height="400">
 <img src="https://github.com/youssef447/FinPay/assets/71401039/63f36fb5-9a06-4832-aa55-38c17666a88c" width= "200" height="400">
 <img src="https://github.com/youssef447/FinPay/assets/71401039/4892e418-6411-4848-822f-08eb333fc75e" width= "200" height="400">
+<img src=https://github.com/youssef447/FinPay/assets/71401039/3db5c0fe-a65f-4ab4-85c6-327ed1514f41" width= "200" height="400">
 
 <img src="https://github.com/youssef447/FinPay/assets/71401039/608d2fc9-7e7b-4de6-ae50-a655416b7812" width= "200" height="400">
-<img src="https://github.com/youssef447/FinPay/assets/71401039/86bef3c7-030e-4473-82e3-8a08c26379dd" width= "200" height="400">
 <img src="https://github.com/youssef447/FinPay/assets/71401039/debf9d96-66b1-4c8c-9b8c-f2aefb3797a4" width= "200" height="400">
 
 <img src="https://github.com/youssef447/FinPay/assets/71401039/675a35ba-1e4a-4cce-91f7-701d28f806b3" width= "200" height="400">
@@ -27,8 +25,8 @@ Demo <br></br>
 <img src="https://github.com/youssef447/FinPay/assets/71401039/835add71-6a06-4f69-982c-fe76cf1aac02" width= "200" height="400">
 <img src="https://github.com/youssef447/FinPay/assets/71401039/a6fa25d3-75a6-4842-ae5a-5df984991829" width= "200" height="400">
 
+<img src="https://github.com/youssef447/FinPay/assets/71401039/f5f5f594-38b7-4b53-bfd2-aed2b5dbabca" width= "200" height="400">
 
-<img src="https://github.com/youssef447/FinPay/assets/71401039/5600af51-2e50-40ae-833f-e296d4adf21c" width= "200" height="400">
 
 <img src="https://github.com/youssef447/FinPay/assets/71401039/a0ddc8a3-9eda-4111-b4e1-60172be0243f" width= "200" height="400">
 
@@ -37,8 +35,16 @@ Demo <br></br>
 <img src="https://github.com/youssef447/FinPay/assets/71401039/2642f12d-560e-487f-aa4b-64eaf583ccce" width= "200" height="400">
 
 <img src="https://github.com/youssef447/FinPay/assets/71401039/6ccf8b5c-ee68-4201-8e65-f6594f5c3f0d" width= "200" height="400">
-<img src="https://github.com/youssef447/FinPay/assets/71401039/50286c14-f92a-452d-9aca-e68c9401a177" width= "200" height="400">
+<img src="https://github.com/youssef447/FinPay/assets/71401039/a19fe385-5214-4566-a61f-1b8807671ad7" width= "200" height="400">
+
+
+
+
 <img src="https://github.com/youssef447/FinPay/assets/71401039/934c6840-a597-4002-abcd-2162cff2f474" width= "200" height="400">
+
+
+
+
 <img src="https://github.com/youssef447/FinPay/assets/71401039/ebc06681-982f-48b0-bf49-e1c390a63bc4" width= "200" height="400">
 
 
