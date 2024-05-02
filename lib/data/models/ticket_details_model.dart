@@ -21,7 +21,7 @@ class TicketModel {
 
 class TicketReplyModel {
   late final int id;
-  late final int userId;
+  late final int? userId;
   late final int ticketId;
   late final int sender;
   late final String message;

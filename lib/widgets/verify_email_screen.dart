@@ -2,9 +2,9 @@
 
 import 'package:finpay/core/style/textstyle.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../presentation/controller/verify_email_controller.dart';
 import 'custom_button.dart';
@@ -49,7 +49,6 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.email);
     return Scaffold(
       body: InkWell(
         onTap: () {
@@ -76,8 +75,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Verify your identity",
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                        AppLocalizations.of(context)!.verify_your_identity,
+                        style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                               fontWeight: FontWeight.w800,
                               fontSize: 24,
                             ),
@@ -86,8 +85,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         height: 4,
                       ),
                       Text(
-                        "We have just sent a code to",
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        AppLocalizations.of(context)!.we_sent_code_to,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
                               color: const Color(0xffA2A0A8),
@@ -98,7 +97,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                       ),
                       Text(
                         widget.email,
-                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontWeight: FontWeight.w600,
                               fontSize: 15,
                             ),
@@ -114,10 +113,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           length: 6,
                           validator: (val) {
                             if (val == null) {
-                              return 'Please fill the 6 fields';
+                              return AppLocalizations.of(context)!.pin_fill_msg;
                             }
                             if (val.length < 6) {
-                              return 'Please fill the 6 fields';
+                              return AppLocalizations.of(context)!.pin_fill_msg;
                             }
                             return null;
                           },
@@ -143,7 +142,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                                 },
                                 child: customButton(
                                   HexColor(AppTheme.primaryColorString!),
-                                  "Continue",
+                                  AppLocalizations.of(context)!.continue_,
                                   HexColor(AppTheme.secondaryColorString!),
                                   context,
                                 ),
@@ -156,9 +155,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'didn\'t recieve email ?',
+                            AppLocalizations.of(context)!.didnt_recieve_email,
                             style:
-                                Theme.of(context).textTheme.caption!.copyWith(
+                                Theme.of(context).textTheme.titleMedium!.copyWith(
                                       fontWeight: FontWeight.w600,
                                     ),
                           ),
@@ -175,10 +174,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                                           context: context);
                                     },
                                     child: Text(
-                                      'Resend',
+                                      AppLocalizations.of(context)!.resend,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .caption!
+                                          .titleMedium!
                                           .copyWith(
                                             fontWeight: FontWeight.w600,
                                             color: HexColor(

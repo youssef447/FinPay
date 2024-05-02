@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "242438155118",
+    "firebase_url": "https://paytome-7c6c9-default-rtdb.firebaseio.com",
+    "project_id": "paytome-7c6c9",
+    "storage_bucket": "paytome-7c6c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242438155118:android:3155a196b54a36fde22f7f",
+        "android_client_info": {
+          "package_name": "com.paytome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242438155118-tt7h4o3o6rvafac4nalevgnrll4fv74p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.paytome",
+            "certificate_hash": "d20c83f9597147d734950b3b83ed906ce6a0718f"
+          }
+        },
+        {
+          "client_id": "242438155118-t0o8rs7qsb7m03937q3v2u4ht6jsa4vf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGURZoIih4tT7jXoSMMY8DNbG59cwKcvA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242438155118-t0o8rs7qsb7m03937q3v2u4ht6jsa4vf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

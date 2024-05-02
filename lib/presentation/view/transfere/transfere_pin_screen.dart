@@ -11,23 +11,34 @@ import '../../../widgets/custom_button.dart';
 import '../../../widgets/indicator_loading.dart';
 
 class TransferePinScreen extends StatefulWidget {
-  const TransferePinScreen({Key? key, }) : super(key: key);
+  const TransferePinScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<TransferePinScreen> createState() => _TransferePinScreenState();
 }
 
 class _TransferePinScreenState extends State<TransferePinScreen> {
-  final TextEditingController _pinController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late final TextEditingController _pinController;
+  late final GlobalKey<FormState> _formKey;
 
-  final pinController = Get.find<PinController>();
+  late final PinController pinController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _pinController = TextEditingController();
+    _formKey = GlobalKey<FormState>();
+    pinController = Get.put(PinController());
+  }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _pinController.dispose();
+    pinController.dispose();
 
     _formKey.currentState?.dispose();
   }
@@ -51,39 +62,44 @@ class _TransferePinScreenState extends State<TransferePinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-   appBar: AppBar(),
-      body: InkWell(
-        focusColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: 20,
-            right: 20,
-            bottom: 15,
-          ),
-          child: Center(
-            child: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        foregroundColor: AppTheme.isLightTheme ? Colors.black : Colors.white,
+        backgroundColor: AppTheme.isLightTheme == false
+            ? const Color(0xff15141F)
+            : Colors.white,
+      ),
+      backgroundColor: AppTheme.isLightTheme == false
+          ? const Color(0xff15141F)
+          : Colors.white,
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                bottom: 15,
+              ),
               child: Column(
-
                 children: [
                   Text(
-                        'Verify To Complete Payment',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 20,
-                            ),
-                      ),
-                      const SizedBox(height: 100,),
+                    AppLocalizations.of(context)!.verify_pin_payment,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 20,
+                        ),
+                  ),
+                  const SizedBox(
+                    height: 100,
+                  ),
                   Text(
                     AppLocalizations.of(context)!.enterPin,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                           fontWeight: FontWeight.w800,
                           fontSize: 24,
                         ),
@@ -99,7 +115,7 @@ class _TransferePinScreenState extends State<TransferePinScreen> {
                       length: 6,
                       validator: (val) {
                         if (val!.length < 6) {
-                          return 'Please fill the 6 fields';
+                          return AppLocalizations.of(context)!.pin_fill_msg;
                         }
                         return null;
                       },
@@ -112,8 +128,8 @@ class _TransferePinScreenState extends State<TransferePinScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'did you forgot pin ?',
-                        style: Theme.of(context).textTheme.caption!.copyWith(
+                        AppLocalizations.of(context)!.i_forgot_my_pin,
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -131,17 +147,18 @@ class _TransferePinScreenState extends State<TransferePinScreen> {
                                   );
                                 },
                                 child: Text(
-                                  'Reset',
+                                  AppLocalizations.of(context)!.reset,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .caption!
+                                      .titleLarge!
                                       .copyWith(
                                         fontWeight: FontWeight.w600,
                                         color: HexColor(
                                           AppTheme.primaryColorString!,
                                         ),
                                       ),
-                                )),
+                                ),
+                              ),
                       )
                     ],
                   ),
@@ -165,10 +182,11 @@ class _TransferePinScreenState extends State<TransferePinScreen> {
                               }
                             },
                             child: customButton(
-                                HexColor(AppTheme.primaryColorString!),
-                                "Continue",
-                                HexColor(AppTheme.secondaryColorString!),
-                                context),
+                              HexColor(AppTheme.primaryColorString!),
+                              AppLocalizations.of(context)!.continue_,
+                              HexColor(AppTheme.secondaryColorString!),
+                              context,
+                            ),
                           ),
                   ),
                 ],

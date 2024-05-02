@@ -13,7 +13,7 @@ Widget customContainer({String? title, String? background, Color? textColor}) {
       padding: const EdgeInsets.all(4.0),
       child: Text(
         title!,
-        style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
+        style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
               fontSize: 14,
               fontWeight: FontWeight.w600,
               color: textColor!,

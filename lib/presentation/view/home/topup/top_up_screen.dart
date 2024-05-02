@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:ui';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:finpay/core/style/textstyle.dart';
 import 'package:finpay/presentation/controller/top_up_controller.dart';
@@ -26,14 +27,31 @@ class TopUpSCreen extends StatefulWidget {
 
 class _TopUpSCreenState extends State<TopUpSCreen> {
   final controller = Get.put(TopupController());
+
   late final MapController mapController;
+    late final MapOptions mapOptions;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+mapController=MapController();
     controller.getBranches(context: context);
-    mapController = MapController();
+    
+    if (widget.latitude != null && widget.longitude != null) {
+      mapOptions = MapOptions(
+        initialCenter: LatLng(widget.latitude!, widget.longitude!),
+        zoom: 15,
+      );
+      controller.center.value = LatLng(widget.latitude!, widget.longitude!);
+    
+    }
+    else{
+      mapOptions = const MapOptions(
+    initialCenter: LatLng(33.513805, 36.276527),
+    zoom: 15,
+  );
+    }
   }
 
   @override
@@ -46,14 +64,6 @@ class _TopUpSCreenState extends State<TopUpSCreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.latitude != null && widget.longitude != null) {
-      controller.mapOptions.value = MapOptions(
-        initialCenter: LatLng(widget.latitude!, widget.longitude!),
-        zoom: 15,
-      );
-      controller.center = LatLng(widget.latitude!, widget.longitude!);
-    }
-
     return Scaffold(
       backgroundColor: AppTheme.isLightTheme == false
           ? const Color(0xff211F32)
@@ -72,8 +82,10 @@ class _TopUpSCreenState extends State<TopUpSCreen> {
                           alignment: Alignment.bottomRight,
                           children: [
                             FlutterMap(
-                             mapController: mapController,
-                              options: controller.mapOptions.value,
+                              
+                              mapController:  mapController,
+                              options: mapOptions,
+                            
                               children: [
                                 TileLayer(
                                   urlTemplate:
@@ -101,17 +113,18 @@ class _TopUpSCreenState extends State<TopUpSCreen> {
                                                 child: FittedBox(
                                                   child: Text(
                                                     element.branchName,
-                                                    style: Theme.of(
-                                                            Get.context!)
-                                                        .textTheme
-                                                        .bodyText2!
-                                                        .copyWith(
-                                                          letterSpacing: 2,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w900,
-                                                          color: Colors.red,
-                                                        ),
+                                                    style:
+                                                        Theme.of(Get.context!)
+                                                            .textTheme
+                                                            .bodyMedium!
+                                                            .copyWith(
+                                                              letterSpacing: 2,
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w900,
+                                                              color: Colors.red,
+                                                            ),
                                                   ),
                                                 ),
                                               ),
@@ -124,8 +137,7 @@ class _TopUpSCreenState extends State<TopUpSCreen> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
                                   onPressed: () {
@@ -136,46 +148,47 @@ class _TopUpSCreenState extends State<TopUpSCreen> {
                                         AppTheme.primaryColorString!,
                                       ),
                                       child: const Icon(
-                                        Icons.arrow_back_ios_new ,
+                                        Icons.arrow_back_ios_new,
                                       )),
                                 ),
                                 IconButton(
                                   onPressed: () {
                                     controller.getCurrentLocation(
-                                        context: context);
+                                      context: context,
+                                      controller:mapController,
+                                    );
                                   },
-                                  icon: controller.center.longitude !=
+                                  icon: controller.center.value.longitude !=
                                               36.276527 &&
-                                          controller.center.latitude !=
+                                          controller.center.value.latitude !=
                                               33.513805
                                       ? Icon(
                                           Icons.my_location_rounded,
                                           size: 50,
-                                          color: HexColor(AppTheme
-                                              .primaryColorString!),
+                                          color: HexColor(
+                                              AppTheme.primaryColorString!),
                                         )
                                       : Icon(
-                                          Icons
-                                              .location_searching_rounded,
+                                          Icons.location_searching_rounded,
                                           size: 50,
-                                          color: HexColor(AppTheme
-                                              .primaryColorString!),
+                                          color: HexColor(
+                                              AppTheme.primaryColorString!),
                                         ),
                                 ),
                               ],
                             ),
                             controller.loadingPosition.value
                                 ? BackdropFilter(
-                                    filter: ImageFilter.blur(
-                                        sigmaX: 2, sigmaY: 2),
+                                    filter:
+                                        ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                                     child: const SizedBox(),
                                   )
                                 : const SizedBox()
                           ],
                         ),
             ),
-             Padding(
-              padding: const EdgeInsets.only(top:15.0),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
               child: Obx(
                 () => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -188,7 +201,7 @@ class _TopUpSCreenState extends State<TopUpSCreen> {
                         controller.currentIndex.value == 0
                             ? HexColor(AppTheme.primaryColorString!)
                             : Colors.white,
-                        'Map',
+                         AppLocalizations.of(context)!.map,
                         controller.currentIndex.value == 0
                             ? Colors.white
                             : Colors.black,
@@ -205,7 +218,7 @@ class _TopUpSCreenState extends State<TopUpSCreen> {
                         controller.currentIndex.value == 1
                             ? HexColor(AppTheme.primaryColorString!)
                             : Colors.white,
-                        'Branches',
+                          AppLocalizations.of(context)!.our_branches,
                         controller.currentIndex.value == 1
                             ? Colors.white
                             : Colors.black,

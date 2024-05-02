@@ -5,6 +5,8 @@ class DefaultImages {
   static const String noWallets = 'assets/images/no_wallets.json';
   static const String transfereImage = 'assets/images/transfereImage.json';
   static const String services = 'assets/images/services.svg';
+  static const String finalLogo = 'assets/images/FinalLogo.png';
+  static const String playstore = 'assets/images/playstore.png';
 
   static const String card = 'assets/images/card.svg';
   static const String chart = 'assets/images/chart.svg';

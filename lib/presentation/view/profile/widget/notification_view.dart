@@ -8,7 +8,7 @@ Widget notificationView(BuildContext context, String? title, Widget? widget) {
     children: [
       Text(
         title!,
-        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w700,
             ),

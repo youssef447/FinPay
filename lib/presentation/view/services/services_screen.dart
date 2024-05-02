@@ -7,8 +7,7 @@ import 'package:finpay/presentation/view/services/my_subscribed_services.dart';
 import 'package:finpay/widgets/no_data_screen.dart';
 import 'package:finpay/widgets/shimmer_list_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -18,20 +17,20 @@ import 'dashboard.dart';
 import 'field_services.dart';
 
 class ServiceScreen extends StatefulWidget {
-  const ServiceScreen({Key? key}) : super(key: key);
+  final ServicesController servicesController;
+  const ServiceScreen({Key? key, required this.servicesController}) : super(key: key);
 
   @override
   State<ServiceScreen> createState() => _ServiceScreenState();
 }
 
 class _ServiceScreenState extends State<ServiceScreen> {
-  final serviceController = Get.put(ServicesController());
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: RefreshIndicator(
         onRefresh: () {
-          return serviceController.getServices(context);
+          return  widget.servicesController.getServices(context);
         },
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -43,7 +42,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.services,
-                    style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
+                    style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
                           letterSpacing: 2,
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
@@ -66,14 +65,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            serviceController.currentIndex.value = 0;
+                             widget.servicesController.currentIndex.value = 0;
                           },
                           child: customButton(
-                              serviceController.currentIndex.value == 0
+                               widget.servicesController.currentIndex.value == 0
                                   ? HexColor(AppTheme.primaryColorString!)
                                   : Colors.white,
                               AppLocalizations.of(context)!.all_fields,
-                              serviceController.currentIndex.value == 0
+                               widget.servicesController.currentIndex.value == 0
                                   ? Colors.white
                                   : Colors.black,
                               context,
@@ -83,14 +82,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            serviceController.currentIndex.value = 1;
+                             widget.servicesController.currentIndex.value = 1;
                           },
                           child: customButton(
-                            serviceController.currentIndex.value == 1
+                             widget.servicesController.currentIndex.value == 1
                                 ? HexColor(AppTheme.primaryColorString!)
                                 : Colors.white,
                             AppLocalizations.of(context)!.subscribed_services,
-                            serviceController.currentIndex.value == 1
+                             widget.servicesController.currentIndex.value == 1
                                 ? Colors.white
                                 : Colors.black,
                             context,
@@ -107,15 +106,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   ),
                   Obx(
                     () => Expanded(
-                      child: serviceController.currentIndex.value == 0
-                          ? serviceController.loading.value
+                      child:  widget.servicesController.currentIndex.value == 0
+                          ?  widget.servicesController.loading.value
                               ? const ShimmerListView(length: 10)
-                              : serviceController.services.value!.fields.isEmpty
+                              :  widget.servicesController.services.value==null||  widget.servicesController.services.value!.fields.isEmpty
                                   ? Center(
                                       child: NoDataScreen(
-                                          title: 'No Available Services',
+                                          title: AppLocalizations.of(context)!.no_services,
                                           onRefresh: () {
-                                            serviceController
+                                             widget.servicesController
                                                 .getServices(context);
                                           }),
                                     )
@@ -123,9 +122,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
                                             onTap: () {
-                                              serviceController
+                                               widget.servicesController
                                                   .getFieldServices(
-                                                fieldId: serviceController
+                                                fieldId:  widget.servicesController
                                                     .services
                                                     .value!
                                                     .fields[index]
@@ -133,19 +132,21 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                     .toString(),
                                                 context: context,
                                               );
-                                              Get.to(() => FieldServices(
-                                                    fieldId: serviceController
-                                                        .services
-                                                        .value!
-                                                        .fields[index]
-                                                        .fieldId
-                                                        .toString(),
-                                                    name: serviceController
-                                                        .services
-                                                        .value!
-                                                        .fields[index]
-                                                        .fieldName,
-                                                  ));
+                                              Get.to(
+                                                () => FieldServices(
+                                                  fieldId:  widget.servicesController
+                                                      .services
+                                                      .value!
+                                                      .fields[index]
+                                                      .fieldId
+                                                      .toString(),
+                                                  name:  widget.servicesController
+                                                      .services
+                                                      .value!
+                                                      .fields[index]
+                                                      .fieldName,
+                                                ),
+                                              );
                                             },
                                             child: Container(
                                               padding:
@@ -168,7 +169,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    serviceController
+                                                     widget.servicesController
                                                         .services
                                                         .value!
                                                         .fields[index]
@@ -176,7 +177,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                     style:
                                                         Theme.of(Get.context!)
                                                             .textTheme
-                                                            .bodyText2!
+                                                            .bodyMedium!
                                                             .copyWith(
                                                               fontSize: 14,
                                                               fontWeight:
@@ -195,25 +196,25 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                           const SizedBox(
                                         height: 10,
                                       ),
-                                      itemCount: serviceController
+                                      itemCount:  widget.servicesController
                                           .services.value!.fields.length,
                                     )
                           : MySubscribedServices(
-                              servicesController: serviceController,
+                              servicesController:  widget.servicesController,
                             ),
                     ),
                   ),
                 ],
               ),
               Obx(
-                () => serviceController.loading.value
+                () =>  widget.servicesController.loading.value|| widget.servicesController.services.value==null
                     ? const SizedBox()
                     : GestureDetector(
                         onTap: () {
-                          serviceController.services.value!.isProvider == null
+                           widget.servicesController.services.value!.isProvider == null
                               ? Get.to(
                                   () => ServicesDashBoard(
-                                    servicesController: serviceController,
+                                    servicesController:  widget.servicesController,
                                   ),
                                   duration: const Duration(milliseconds: 500),
                                   transition: Transition.downToUp,
@@ -226,7 +227,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         },
                         child: customButton(
                           HexColor(AppTheme.primaryColorString!),
-                          serviceController.services.value!.isProvider == null
+                           widget.servicesController.services.value!.isProvider == null
                               ? AppLocalizations.of(context)!.dashboard
                               : AppLocalizations.of(context)!.be_provider,
                           HexColor(AppTheme.secondaryColorString!),

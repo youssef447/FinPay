@@ -9,6 +9,8 @@ import 'package:finpay/data/models/ticket_details_model.dart';
 import 'package:finpay/data/models/transaction_model.dart';
 import 'package:finpay/data/models/wallet_model.dart';
 
+import '../models/member_model.dart';
+
 class UserRepo {
   final UserServices _service;
   UserRepo({required UserServices service}) : _service = service;
@@ -410,6 +412,104 @@ class UserRepo {
             decodedJson['data'],
           ),
         );
+      } else {
+        return left(
+          ServiceFailure(
+            decodedJson['message'],
+          ),
+        );
+      }
+    } catch (e) {
+      return left(
+        ServiceFailure(e.toString()),
+      );
+    }
+  }
+
+  Future<Either<Failure, List<MemberModel>>> getBookingList() async {
+    try {
+      final response = await _service.getBookingList();
+      final decodedJson =
+          json.decode(const Utf8Codec().decode(response.bodyBytes));
+      if (decodedJson['success'] == true) {
+        List<MemberModel> list = [];
+        list = (decodedJson['data'] as List<dynamic>).map((element) {
+          return MemberModel.fromJson(element);
+        }).toList();
+        return Right(list);
+      } else {
+        return left(
+          ServiceFailure(
+            decodedJson['message'],
+          ),
+        );
+      }
+    } catch (e) {
+      return left(
+        ServiceFailure(e.toString()),
+      );
+    }
+  }
+
+  Future<Either<Failure, String>> addToBookingList(
+      {required String username, required String nickName}) async {
+    try {
+      final response = await _service.addToBookingList(
+          body: {'member_username': username, 'member_nick_name': nickName});
+      final decodedJson =
+          json.decode(const Utf8Codec().decode(response.bodyBytes));
+
+      if (decodedJson['success'] == true) {
+        return Right(decodedJson['message']);
+      } else {
+        return left(
+          ServiceFailure(
+            decodedJson['message'],
+          ),
+        );
+      }
+    } catch (e) {
+      return left(
+        ServiceFailure(e.toString()),
+      );
+    }
+  }
+
+  Future<Either<Failure, String>> editBookingList(
+      {required String memberId, required String nickName}) async {
+    try {
+      final response = await _service.editToBookingList(
+          body: {'member_nick_name': nickName}, query: {'member_id': memberId});
+      final decodedJson =
+          json.decode(const Utf8Codec().decode(response.bodyBytes));
+
+      if (decodedJson['success'] == true) {
+        return Right(decodedJson['message']);
+      } else {
+        return left(
+          ServiceFailure(
+            decodedJson['message'],
+          ),
+        );
+      }
+    } catch (e) {
+      return left(
+        ServiceFailure(e.toString()),
+      );
+    }
+  }
+
+  Future<Either<Failure, String>> deleteFromBookingList({
+    required String memberId,
+  }) async {
+    try {
+      final response =
+          await _service.deleteFromBookingList(query: {'member_id': memberId});
+      final decodedJson =
+          json.decode(const Utf8Codec().decode(response.bodyBytes));
+
+      if (decodedJson['success'] == true) {
+        return Right(decodedJson['message']);
       } else {
         return left(
           ServiceFailure(

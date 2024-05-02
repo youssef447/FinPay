@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-
 import 'package:finpay/core/style/textstyle.dart';
 import 'package:finpay/widgets/shimmer_card.dart';
 import 'package:flutter/material.dart';
@@ -9,18 +8,18 @@ import 'package:lottie/lottie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/style/images_asset.dart';
-import '../../controller/card_controller.dart';
+import '../../controller/home_controller.dart';
 import '../home/widget/debi_card.dart';
 
 class CardView extends StatelessWidget {
-  final cardController = Get.find<CardController>();
+  final homeController = Get.find<HomeController>();
   CardView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () {
-        return cardController.getAllWallets(context: context);
+        return homeController.getAllWallets(context: context);
       },
       child: Container(
         width: double.infinity,
@@ -35,7 +34,7 @@ class CardView extends StatelessWidget {
               children: [
                 Text(
                   AppLocalizations.of(context)!.my_cards,
-                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
                       ),
@@ -43,7 +42,7 @@ class CardView extends StatelessWidget {
                 const SizedBox(
                   height: 25,
                 ),
-                cardController.loadingWallets.value
+                homeController.loadingWallets.value
                     ? Expanded(
                         child: ListView.separated(
                             padding: const EdgeInsets.only(
@@ -61,7 +60,7 @@ class CardView extends StatelessWidget {
                             itemCount: 10),
                       )
                     : Expanded(
-                        child: cardController.allWalletsList.isEmpty
+                        child: homeController.allWalletsList.isEmpty
                             ? Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -73,10 +72,11 @@ class CardView extends StatelessWidget {
                                     frameRate: const FrameRate(100),
                                   ),
                                   Text(
-                                    'No wallets added yet',
+                                    AppLocalizations.of(context)!
+                                              .no_wallets_yet,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .subtitle2!
+                                        .labelMedium!
                                         .copyWith(
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -93,28 +93,28 @@ class CardView extends StatelessWidget {
                                   left: 20,
                                   right: 20,
                                 ),
-                                itemCount: cardController.allWalletsList.length,
+                                itemCount: homeController.allWalletsList.length,
                                 itemBuilder: (context, index) => ClipRRect(
                                   child: Obx(
                                     () => Stack(
                                         alignment: Alignment.topRight,
                                         children: [
                                           DebitCard(
-                                            walletModel: cardController
+                                            walletModel: homeController
                                                 .allWalletsList[index],
                                           ),
                                           Positioned(
                                             top: 10,
                                             right: 10,
                                             child: Switch.adaptive(
-                                              value: !cardController
+                                              value: !homeController
                                                   .allWalletsList[index]
                                                   .hidden
                                                   .value,
                                               activeColor: HexColor(
                                                   AppTheme.primaryColorString!),
                                               onChanged: (val) {
-                                                cardController.toggleWallet(
+                                                homeController.toggleWallet(
                                                   val: val,
                                                   context: context,
                                                   currentIndex: index,

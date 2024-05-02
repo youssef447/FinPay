@@ -2,10 +2,11 @@ import 'package:intl/intl.dart';
 
 class TransactionCodeDetailsModel {
   late final int id;
+    int? walletId;
   late final String? creationDate;
   final String image = 'assets/images/transaction.svg';
 
-  late final String? amount;
+    String? amount;
   String? walletCurrency = 'N/A';
   String? walletName;
   late final String? username;
@@ -14,10 +15,13 @@ class TransactionCodeDetailsModel {
   TransactionCodeDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     if (json['wallet'] != false) {
+      if(json['wallet']['created_at']!=null){
       creationDate = DateFormat('M/d/y, hh:mm aa')
           .format(DateTime.parse(json['wallet']['created_at']));
+      }
       walletCurrency = json["wallet"]['wallet_currency'];
       walletName = json["wallet"]['wallet_name'];
+      walletId=json["wallet"]['id'];
     }
     amount = json["money"];
     username = json["username"];

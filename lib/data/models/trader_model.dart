@@ -22,6 +22,10 @@ class TraderServicesModel {
   late final String traderPic;
   late String exchangeRate;
   late final String toWalletName;
+  late final int toWalletId;
+
+  late final int fromWalletId;
+
   late final String fromWalletName;
   late final String toWalletCurrency;
   late final String fromWalletCurrency;
@@ -36,6 +40,9 @@ class TraderServicesModel {
     traderPic = json["trader_image"];
     exchangeRate = json["exchange_rate"];
     toWalletName = (json["to_wallet"]['wallet_name']);
+    toWalletId = (json["to_wallet"]['id']);
+    fromWalletId = (json["from_wallet"]['id']);
+
     fromWalletName = (json["from_wallet"]['wallet_name']);
     toWalletCurrency = (json["to_wallet"]['wallet_currency']);
     fromWalletCurrency = (json["from_wallet"]['wallet_currency']);

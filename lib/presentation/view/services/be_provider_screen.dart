@@ -57,7 +57,7 @@ class _BeProviderScreenState extends State<BeProviderScreen> {
             : Colors.transparent,
         title: Text(
           'Be A Provider',
-          style: Theme.of(context).textTheme.headline6!.copyWith(
+          style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                 fontWeight: FontWeight.w800,
                 fontSize: 20,
               ),

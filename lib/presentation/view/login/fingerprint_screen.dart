@@ -6,6 +6,7 @@ import 'package:finpay/presentation/controller/fingerprint_controller..dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FingerPrintScreen extends StatefulWidget {
   const FingerPrintScreen({Key? key}) : super(key: key);
@@ -71,10 +72,10 @@ class _FingerPrintScreenState extends State<FingerPrintScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Fingerprint",
+                                  AppLocalizations.of(context)!.fingerprint,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline6!
+                                      .headlineLarge!
                                       .copyWith(
                                         fontWeight: FontWeight.w800,
                                         fontSize: 24,
@@ -87,11 +88,11 @@ class _FingerPrintScreenState extends State<FingerPrintScreen> {
                                   padding: const EdgeInsets.only(
                                       left: 45.0, right: 45),
                                   child: Text(
-                                    "Please Tap your finger below to use login authentication",
+                                    AppLocalizations.of(context)!.fingerprint_desc,
                                     textAlign: TextAlign.center,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText2!
+                                        .bodyMedium!
                                         .copyWith(
                                             fontWeight: FontWeight.w500,
                                             fontSize: 16,
@@ -130,62 +131,7 @@ class _FingerPrintScreenState extends State<FingerPrintScreen> {
                 ],
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 45, right: 45),
-                child: Center(
-                  child: SizedBox(
-                    width: Get.width,
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: "By set fingerprint, you agree to our ",
-                            style:
-                                Theme.of(context).textTheme.bodyText2!.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                      color: const Color(0xffA2A0A8),
-                                    ),
-                          ),
-                          TextSpan(
-                              text: "Terms",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                      color: AppTheme.isLightTheme == false
-                                          ? const Color(0xffA2A0A8)
-                                          : const Color(0xff15141F))),
-                          TextSpan(
-                            text: " and ",
-                            style:
-                                Theme.of(context).textTheme.bodyText2!.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                      color: const Color(0xffA2A0A8),
-                                    ),
-                          ),
-                          TextSpan(
-                            text: "Conditions",
-                            style:
-                                Theme.of(context).textTheme.bodyText2!.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                      color: const Color(0xff15141F),
-                                    ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
+            
           ],
         ),
       ),

@@ -40,7 +40,7 @@ Widget circleCard({String? image, String? title, Color? color}) {
       ),
       Text(
         title!,
-        style: Theme.of(Get.context!).textTheme.bodyText1!.copyWith(
+        style: Theme.of(Get.context!).textTheme.bodySmall!.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),

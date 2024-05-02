@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../style/textstyle.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DefaultSnackbar {
   DefaultSnackbar._();
@@ -18,8 +19,8 @@ class DefaultSnackbar {
       GetSnackBar(
         snackPosition: snackPosition ?? SnackPosition.BOTTOM,
         titleText: Text(
-          title??'',
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+          AppLocalizations.of(context)!.failed,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 fontWeight: FontWeight.w700,
                 fontSize: 16,
                 color: HexColor(AppTheme.secondaryColorString!),

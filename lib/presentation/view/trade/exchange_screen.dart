@@ -3,7 +3,7 @@ import 'package:finpay/widgets/default_cached_image.dart';
 import 'package:finpay/widgets/indicator_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../core/style/textstyle.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_textformfield.dart';
@@ -89,8 +89,8 @@ class _ExchangeScreenState extends State<ExchangeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  'From',
-                  style: Theme.of(context).textTheme.titleMedium,
+                  AppLocalizations.of(context)!.from,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Text(
                   '1 ${widget.fromWallet}',
@@ -105,8 +105,8 @@ class _ExchangeScreenState extends State<ExchangeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  'To',
-                  style: Theme.of(context).textTheme.titleMedium,
+                  AppLocalizations.of(context)!.to,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Text(
                   '${widget.exchangeRate} ${widget.toWallet}',
@@ -120,42 +120,46 @@ class _ExchangeScreenState extends State<ExchangeScreen> {
             Form(
               key: formKey,
               child: CustomTextFormField(
-                hintText: 'exchange amount',
+                hintText: AppLocalizations.of(context)!.exchange_rate,
                 textEditingController: amountController,
                 inputType: TextInputType.number,
                 autoValidate: false,
                 validator: (val) {
                   if (val!.isEmpty) {
-                    return 'amount required';
+                    return AppLocalizations.of(context)!.amount_required;
                   }
                   return null;
                 },
               ),
             ),
             const SizedBox(
-              height: 15,
+              height: 40,
             ),
             Obx(
               () => widget.tradeController.loadingExchange.value
                   ? const IndicatorBlurLoading()
-                  : GestureDetector(
-                      onTap: () {
-                        if (formKey.currentState!.validate()) {
-                          widget.tradeController.exchangeTradement(
-                              exchangeRate: amountController.text,
-                              tradeId: widget.tradeId,
-                              context: context);
-                        }
-                      },
-                      child: customButton(
-                        HexColor(AppTheme.primaryColorString!),
-                        'exchange',
-                        HexColor(AppTheme.secondaryColorString!),
-                        context,
-                        width: Get.width / 2.5,
-                        height: 40,
+                  : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          if (formKey.currentState!.validate()) {
+                            widget.tradeController.exchangeTradement(
+                                exchangeRate: amountController.text,
+                                tradeId: widget.tradeId,
+                                context: context);
+                          }
+                        },
+                        child: customButton(
+                          HexColor(AppTheme.primaryColorString!),
+                                            AppLocalizations.of(context)!.exchange,
+                    
+                          HexColor(AppTheme.secondaryColorString!),
+                          context,
+                          width: Get.width / 2.5,
+                          height: 40,
+                        ),
                       ),
-                    ),
+                  ),
             ),
           ],
         ),

@@ -7,13 +7,12 @@ import 'package:finpay/presentation/controller/services_controller.dart';
 import 'package:finpay/presentation/controller/tab_controller.dart';
 import 'package:finpay/presentation/view/card/card_view.dart';
 import 'package:finpay/presentation/view/home/home_view.dart';
-import 'package:finpay/presentation/view/profile/profile_view.dart';
+import 'package:finpay/presentation/view/home/widget/qr_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../controller/card_controller.dart';
 import '../controller/trade_controller.dart';
 import 'services/services_screen.dart';
 import 'trade/trade_screen.dart';
@@ -26,29 +25,27 @@ class TabScreen extends StatefulWidget {
 }
 
 class _TabScreenState extends State<TabScreen> {
-  final tabController = Get.put(TabScreenController());
-  final homeController = Get.put(HomeController());
-  final tradeController = Get.put(TradeController());
-  final cardController = Get.put(CardController());
-  final servicesController = Get.put(ServicesController());
+  late final TabScreenController tabController;
+
+  late final HomeController homeController;
+  late final TradeController tradeController;
+  late final ServicesController servicesController;
 
   @override
   void initState() {
     super.initState();
-    tabController.customInit();
+    tabController = Get.put(TabScreenController());
+    homeController = Get.put(HomeController());
 
+    tradeController = Get.put(TradeController());
+
+    servicesController = Get.put(ServicesController());
+    
+    tabController.customInit();
+  
     homeController.customInit(context);
     tradeController.getTrades(context);
-    cardController.getAllWallets(context: context);
     servicesController.getServices(context);
-  }
-
-  int _currentIndex = 0;
-
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
   }
 
   @override
@@ -57,106 +54,212 @@ class _TabScreenState extends State<TabScreen> {
       backgroundColor: AppTheme.isLightTheme == false
           ? const Color(0xff15141F)
           : Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 20,
-        currentIndex: tabController.pageIndex.value,
-        onTap: (index) {
-          setState(() {
-            tabController.pageIndex.value = index;
-          });
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(
+            () => const QrScannerView(
+              homeView: true,
+            ),
+          );
         },
+        shape: const CircleBorder(),
         backgroundColor: AppTheme.isLightTheme == false
+            ? Color.fromARGB(255, 43, 41, 62)
+            : Theme.of(context).appBarTheme.backgroundColor,
+        child: Icon(Icons.qr_code_scanner,
+            color: AppTheme.isLightTheme
+                ? HexColor(AppTheme.primaryColorString!)
+                : const Color(0xffA2A0A8)),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: AppTheme.isLightTheme == false
             ? HexColor('#15141f')
             : Theme.of(context).appBarTheme.backgroundColor,
-        type: BottomNavigationBarType.fixed,
-        unselectedItemColor: AppTheme.isLightTheme == false
-            ? const Color(0xffA2A0A8)
-            : HexColor(AppTheme.primaryColorString!).withOpacity(0.4),
-        selectedItemColor: HexColor(AppTheme.primaryColorString!),
-        items: [
-          BottomNavigationBarItem(
-            icon: SizedBox(
-              height: 20,
-              width: 20,
-              child: SvgPicture.asset(
-                DefaultImages.home,
-                color: tabController.pageIndex.value == 0
-                    ? HexColor(AppTheme.primaryColorString!)
-                    : AppTheme.isLightTheme == false
-                        ? const Color(0xffA2A0A8)
-                        : HexColor(AppTheme.primaryColorString!)
-                            .withOpacity(0.4),
-              ),
-            ),
-            label: AppLocalizations.of(context)!.home,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.monetization_on_sharp,
-              color: tabController.pageIndex.value == 1
-                  ? HexColor(AppTheme.primaryColorString!)
-                  : AppTheme.isLightTheme == false
-                      ? const Color(0xffA2A0A8)
-                      : HexColor(AppTheme.primaryColorString!).withOpacity(0.4),
-            ),
-            label: AppLocalizations.of(context)!.tradments,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.medical_services_rounded,
-              color: tabController.pageIndex.value == 2
-                  ? HexColor(AppTheme.primaryColorString!)
-                  : AppTheme.isLightTheme == false
-                      ? const Color(0xffA2A0A8)
-                      : HexColor(AppTheme.primaryColorString!).withOpacity(0.4),
-            ),
-            label: AppLocalizations.of(context)!.services,
-          ),
-          BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 20,
-                width: 20,
-                child: SvgPicture.asset(
-                  DefaultImages.card,
-                  color: tabController.pageIndex.value == 3
-                      ? HexColor(AppTheme.primaryColorString!)
-                      : AppTheme.isLightTheme == false
-                          ? const Color(0xffA2A0A8)
-                          : HexColor(AppTheme.primaryColorString!)
-                              .withOpacity(0.4),
+        shape: CircularNotchedRectangle(),
+        notchMargin: 8,
+        elevation: 80,
+        shadowColor: Colors.grey,
+        child: Obx(
+          () => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () {
+                  tabController.pageIndex.value = 0;
+                },
+                child: SizedBox(
+                  width: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SvgPicture.asset(
+                        DefaultImages.home,
+                        color: tabController.pageIndex.value == 0
+                            ? HexColor(AppTheme.primaryColorString!)
+                            : AppTheme.isLightTheme == false
+                                ? const Color(0xffA2A0A8)
+                                : HexColor(AppTheme.primaryColorString!)
+                                    .withOpacity(0.4),
+                      ),
+                      FittedBox(
+                        child: Text(
+                          AppLocalizations.of(context)!.home,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(
+                                fontSize: 12,
+                                color: tabController.pageIndex.value == 0
+                                    ? HexColor(AppTheme.primaryColorString!)
+                                    : AppTheme.isLightTheme == false
+                                        ? const Color(0xffA2A0A8)
+                                        : HexColor(AppTheme.primaryColorString!)
+                                            .withOpacity(0.4),
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              label: AppLocalizations.of(context)!.wallets),
-          BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 20,
-                width: 20,
-                child: SvgPicture.asset(
-                  DefaultImages.user,
-                  color: tabController.pageIndex.value == 4
-                      ? HexColor(AppTheme.primaryColorString!)
-                      : AppTheme.isLightTheme == false
-                          ? const Color(0xffA2A0A8)
-                          : HexColor(AppTheme.primaryColorString!)
-                              .withOpacity(0.4),
+              InkWell(
+                onTap: () {
+                  tabController.pageIndex.value = 1;
+                },
+                child: SizedBox(
+                  width: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.currency_exchange,
+                        color: tabController.pageIndex.value == 1
+                            ? HexColor(AppTheme.primaryColorString!)
+                            : AppTheme.isLightTheme == false
+                                ? const Color(0xffA2A0A8)
+                                : HexColor(AppTheme.primaryColorString!)
+                                    .withOpacity(0.4),
+                      ),
+                      FittedBox(
+                        child: Text(
+                          AppLocalizations.of(context)!.tradments,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(
+                                fontSize: 12,
+                                color: tabController.pageIndex.value == 1
+                                    ? HexColor(AppTheme.primaryColorString!)
+                                    : AppTheme.isLightTheme == false
+                                        ? const Color(0xffA2A0A8)
+                                        : HexColor(AppTheme.primaryColorString!)
+                                            .withOpacity(0.4),
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              label:AppLocalizations.of(context)!.profile),
-        ],
+              const SizedBox(
+                width: 2,
+              ),
+              InkWell(
+                onTap: () {
+                  tabController.pageIndex.value = 2;
+                },
+                child: SizedBox(
+                  width: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.medical_services_rounded,
+                        color: tabController.pageIndex.value == 2
+                            ? HexColor(AppTheme.primaryColorString!)
+                            : AppTheme.isLightTheme == false
+                                ? const Color(0xffA2A0A8)
+                                : HexColor(AppTheme.primaryColorString!)
+                                    .withOpacity(0.4),
+                      ),
+                      FittedBox(
+                        child: Text(
+                          AppLocalizations.of(context)!.services,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(
+                                fontSize: 12,
+                                color: tabController.pageIndex.value == 2
+                                    ? HexColor(AppTheme.primaryColorString!)
+                                    : AppTheme.isLightTheme == false
+                                        ? const Color(0xffA2A0A8)
+                                        : HexColor(AppTheme.primaryColorString!)
+                                            .withOpacity(0.4),
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  tabController.pageIndex.value = 3;
+                },
+                child: SizedBox(
+                  width: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SvgPicture.asset(
+                        DefaultImages.card,
+                        color: tabController.pageIndex.value == 3
+                            ? HexColor(AppTheme.primaryColorString!)
+                            : AppTheme.isLightTheme == false
+                                ? const Color(0xffA2A0A8)
+                                : HexColor(AppTheme.primaryColorString!)
+                                    .withOpacity(0.4),
+                      ),
+                      FittedBox(
+                        child: Text(
+                          AppLocalizations.of(context)!.wallets,
+                          style:
+                              Theme.of(context).textTheme.titleSmall!.copyWith(
+                                    fontSize: 12,
+                                    color: tabController.pageIndex.value == 3
+                                        ? HexColor(AppTheme.primaryColorString!)
+                                        : AppTheme.isLightTheme == false
+                                            ? const Color(0xffA2A0A8)
+                                            : HexColor(
+                                                AppTheme.primaryColorString!,
+                                              ).withOpacity(
+                                                0.4,
+                                              ),
+                                  ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      body: GetX<TabScreenController>(
-        init: tabController,
-        builder: (tabController) => tabController.pageIndex.value == 0
+      body: Obx(
+        () => tabController.pageIndex.value == 0
             ? HomeView(homeController: homeController)
             : tabController.pageIndex.value == 1
                 ? TradeView(
                     tradeController: tradeController,
                   )
                 : tabController.pageIndex.value == 2
-                    ? ServiceScreen()
-                    : tabController.pageIndex.value == 3
-                        ? CardView()
-                        : const ProfileView(),
+                    ? ServiceScreen(
+                        servicesController: servicesController,
+                      )
+                    : CardView(),
       ),
     );
   }

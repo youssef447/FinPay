@@ -1,18 +1,24 @@
 import 'dart:convert';
 
+import 'package:finpay/config/extensions.dart';
 import 'package:finpay/config/injection.dart';
 import 'package:finpay/config/services/local/cach_helper.dart';
 import 'package:finpay/core/utils/globales.dart';
 import 'package:finpay/data/models/ticket_details_model.dart';
 import 'package:finpay/data/repositories/auth_repo.dart';
 import 'package:finpay/data/repositories/user_repo.dart';
+import 'package:finpay/presentation/controller/home_controller.dart';
 import 'package:finpay/presentation/view/login/login_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/utils/default_dialog.dart';
 import '../../core/utils/default_snackbar.dart';
+import '../../data/models/transaction_model.dart';
+import '../../main.dart';
 
 class ProfileController extends GetxController {
   RxBool darkMode = false.obs;
@@ -22,6 +28,9 @@ class ProfileController extends GetxController {
       currentUser.notificationOn == 1 ? true.obs : false.obs;
   RxBool loadingLogout = false.obs;
   RxBool loadingTickets = false.obs;
+  RxBool loadingAllTxn = false.obs;
+  RxBool loadingAllTxnErr = false.obs;
+
   List<TicketModel> tickets = [];
   RxBool loadingTicketsDetails = false.obs;
 
@@ -32,11 +41,25 @@ class ProfileController extends GetxController {
   RxBool paid = false.obs;
   RxBool spending = true.obs;
   RxInt selectedLang = language == 'ar' ? 1.obs : 0.obs;
-  swithTheme({required bool isDark}) {
-    CacheHelper.saveData(
-      key: 'dark',
-      value: darkMode,
-    );
+  switchTheme({required bool val, required BuildContext context}) async {
+    try {
+      await CacheHelper.saveData(
+        key: 'light',
+        value: !val,
+      );
+      darkMode.value = val;
+      if (val == false) {
+        MyApp.setCustomeTheme(context, 6);
+      } else {
+        MyApp.setCustomeTheme(context, 7);
+      }
+    } catch (e) {
+      DefaultSnackbar.snackBar(
+        context: Get.context!,
+        message: AppLocalizations.of(context)!.err,
+        title: 'failed',
+      );
+    }
   }
 
   changeLang(int val) async {
@@ -54,7 +77,7 @@ class ProfileController extends GetxController {
     } catch (e) {
       DefaultSnackbar.snackBar(
         context: Get.context!,
-        message: 'error occured',
+        message: AppLocalizations.of(Get.context!)!.err,
         title: 'failed',
       );
     }
@@ -76,6 +99,9 @@ class ProfileController extends GetxController {
           key: 'user',
           value: json.encode(currentUser.toJson()),
         );
+        if (context.mounted) {
+          Get.find<HomeController>().customInit(context);
+        }
       } catch (e) {
         if (context.mounted) {
           DefaultSnackbar.snackBar(
@@ -182,12 +208,6 @@ class ProfileController extends GetxController {
 
       err = l.errMessage;
     }, (r) async {
-      /*  await  Future.forEach(r, (value) async {
-      await  getTicketsDetails(
-          context: context,
-          ticketId: value.id.toString(),
-        );
-      }); */
       Future.wait(r.map((e) => getTicketsDetails(
             context: context,
             ticketId: e.id.toString(),
@@ -239,11 +259,12 @@ class ProfileController extends GetxController {
 
   RxBool loadingCreateTicket = false.obs;
 
-  createTicket(
-      {required String msg,
-      String? ticketId,
-      bool? oneDetail,
-      required BuildContext context}) async {
+  createTicket({
+    required String msg,
+    String? ticketId,
+    bool? oneDetail,
+    required BuildContext context,
+  }) async {
     loadingCreateTicket.value = true;
 
     final response = await locators.get<UserRepo>().createTicket(
@@ -278,5 +299,69 @@ class ProfileController extends GetxController {
         );
       },
     );
+  }
+
+  RxInt chipChoice = 0.obs;
+
+  RxList<TransactionModel> sortedList = List<TransactionModel>.empty().obs;
+  RxList<TransactionModel> all = List<TransactionModel>.empty().obs;
+
+  getAllTransactions({
+    required BuildContext context,
+  }) async {
+    loadingAllTxn.value = true;
+    loadingAllTxnErr.value = false;
+    sortedList.value = [];
+
+    final response = await locators.get<UserRepo>().getTransactions();
+    loadingAllTxn.value = false;
+    response.fold((l) {
+      loadingAllTxnErr.value = true;
+      AwesomeDialogUtil.error(
+        context: context,
+        body: l.errMessage,
+        title: 'Failed',
+        btnOkOnPress: () {
+          Get.back();
+        },
+      );
+    }, (r) {
+      all.value = r;
+      sortedList.value = r;
+    });
+  }
+
+  sortList({
+    required int v,
+    DateTime? date,
+    String? sender,
+    String? reciever,
+    int? walletId,
+  }) {
+    chipChoice.value = v;
+    if (v == 4) {
+      sortedList.value = all.where((element) {
+        return DateTime.parse(element.originalCreationDate).isSameDate(date!);
+      }).toList();
+    } else if (v == 3) {
+      sortedList.value = all.where((element) {
+        return element.walletId == walletId;
+      }).toList();
+    }
+
+    /// it will be 1,2 only
+    else {
+      sortedList.value = all.where(
+        (element) {
+          return sender != null
+              ? element.sender.fullName
+                  .toLowerCase()
+                  .contains(sender.toLowerCase())
+              : element.recipient.fullName
+                  .toLowerCase()
+                  .contains(reciever!.toLowerCase());
+        },
+      ).toList();
+    }
   }
 }

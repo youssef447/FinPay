@@ -1,28 +1,30 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:async';
 import 'dart:convert';
-
 import 'package:finpay/config/extensions.dart';
 import 'package:finpay/config/injection.dart';
 import 'package:finpay/config/services/local/cach_helper.dart';
 import 'package:finpay/core/utils/globales.dart';
-
 import 'package:finpay/data/models/group_model.dart';
 import 'package:finpay/data/repositories/transfere_repo.dart';
 import 'package:finpay/data/repositories/user_repo.dart';
+import 'package:finpay/presentation/controller/trade_controller.dart';
+import 'package:finpay/presentation/view/transfere/transfer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-
 import '../../core/utils/default_dialog.dart';
 import '../../core/utils/default_snackbar.dart';
 import '../../data/data_sources/location_service.dart';
+import '../../data/models/member_model.dart';
 import '../../data/models/transaction_code_details_model.dart';
 import '../../data/models/transaction_model.dart';
 import '../../data/models/wallet_model.dart';
 import '../view/home/topup/top_up_screen.dart';
+import '../view/home/transaction_details.dart';
 import '../view/profile/widget/transaction_code_details.dart';
 import '../view/transfere/transfer_sucess_screen.dart';
 
@@ -30,7 +32,7 @@ class HomeController extends GetxController {
   RxList<WalletModel> walletsList = List<WalletModel>.empty(growable: true).obs;
   RxList<WalletModel> allWalletsList = <WalletModel>[].obs;
   RxList<GroupModel> groups = <GroupModel>[].obs;
-  RxList<GroupMemberModel> groupMembers = <GroupMemberModel>[].obs;
+  RxList<MemberModel> groupMembers = <MemberModel>[].obs;
   RxList<TransactionModel> sortedList = List<TransactionModel>.empty().obs;
   RxInt chipChoice = 0.obs;
 
@@ -51,15 +53,11 @@ class HomeController extends GetxController {
   int? selectedGroupId;
   final method = Method.none.obs;
 
-  customInit(BuildContext context) async {
-    walletFetchingFailed = false.obs;
-    txnsFetchingFailed = false.obs;
-    walletIndex.value = 0;
-
-    loadingTransactions.value = true;
+  getAllWallets({required BuildContext context}) async {
     loadingWallets.value = true;
 
     final response = await locators.get<UserRepo>().getmyWallets();
+    loadingWallets.value = false;
 
     response.fold((l) {
       walletFetchingFailed.value = true;
@@ -76,6 +74,13 @@ class HomeController extends GetxController {
       walletsList.value = allWalletsList
           .where((element) => element.hidden.value == false)
           .toList();
+
+      Get.find<TradeController>().walletsList = allWalletsList;
+      Get.find<TradeController>().pickedWalletId =
+          allWalletsList[0].walletId.obs;
+      Get.find<TradeController>().pickedToWalletId =
+          allWalletsList[1].walletId.obs;
+
       loadingWallets.value = false;
 
       if (walletsList.isNotEmpty) {
@@ -83,6 +88,44 @@ class HomeController extends GetxController {
       }
       loadingTransactions.value = false;
     });
+  }
+
+  toggleWallet({
+    required BuildContext context,
+    required bool val,
+    required int currentIndex,
+  }) async {
+    final response = await locators.get<UserRepo>().toggleWallet(
+          walletId: allWalletsList[currentIndex].id.toString(),
+        );
+    response.fold(
+      (l) {
+        DefaultSnackbar.snackBar(
+          context: context,
+          message: l.errMessage,
+          title: 'failed',
+        );
+      },
+      (r) {
+        allWalletsList[currentIndex].hidden.value = !val;
+        walletIndex.value = 0;
+        walletsList.value = allWalletsList
+            .where((element) => element.hidden.value == false)
+            .toList();
+        getWalletTransactions(0);
+      },
+    );
+  }
+
+  customInit(BuildContext context) async {
+    walletFetchingFailed = false.obs;
+    txnsFetchingFailed = false.obs;
+    walletIndex.value = 0;
+
+    loadingTransactions.value = true;
+    loadingWallets.value = true;
+
+    getAllWallets(context: context);
   }
 
   getWalletTransactions(int index) async {
@@ -250,19 +293,19 @@ class HomeController extends GetxController {
     );
   }
 
-  RxString errGroupMembers = ''.obs;
+  RxString err = ''.obs;
 
   Future<void> getGroupMembers(
       {required BuildContext context, required String groupId}) async {
     loadingGroupMembers.value = true;
-    errGroupMembers.value = '';
+    err.value = '';
     final response =
         await locators.get<TransferRepo>().searchGroupMembers(groupId: groupId);
     loadingGroupMembers.value = false;
 
     response.fold(
       (l) {
-        errGroupMembers.value = l.errMessage;
+        err.value = l.errMessage;
       },
       (r) {
         groupMembers.value = r;
@@ -271,16 +314,62 @@ class HomeController extends GetxController {
   }
 
   RxBool loadingEditGroupMember = false.obs;
+  RxBool loadingDeleteGroupMember = false.obs;
 
   deleteGroupMember({
     required BuildContext context,
     required String groupMemberId,
     required String groupId,
   }) async {
-    loadingEditGroupMember.value = true;
+    loadingDeleteGroupMember.value = true;
 
     final response = await locators.get<TransferRepo>().deleteGroupMember(
           groupMemberId: groupMemberId,
+        );
+    loadingDeleteGroupMember.value = false;
+
+    response.fold(
+      (l) {
+        DefaultSnackbar.snackBar(
+          context: context,
+          message: l.errMessage,
+          title: 'failed',
+        );
+      },
+      (r) {
+        AwesomeDialogUtil.sucess(
+          context: context,
+          body: r,
+          title: 'Done',
+          btnOkOnPress: () async {
+            Get.back();
+            await Future.wait([
+              getGroupMembers(
+                context: context,
+                groupId: groupId,
+              ),
+              getGroups(
+                context: context,
+              ),
+            ]);
+          },
+        );
+      },
+    );
+  }
+
+  editGroupMember({
+    required BuildContext context,
+    required String groupMemberId,
+    required String groupId,
+    required String nickName,
+  }) async {
+    loadingEditGroupMember.value = true;
+
+    final response = await locators.get<TransferRepo>().editGroupMember(
+          groupMemberId: groupMemberId,
+          groupId: groupId,
+          nickName: nickName,
         );
     loadingEditGroupMember.value = false;
 
@@ -297,8 +386,13 @@ class HomeController extends GetxController {
           context: context,
           body: r,
           title: 'Done',
-          btnOkOnPress: () {
-            getGroupMembers(context: context, groupId: groupId);
+          btnOkOnPress: () async {
+            Get.back();
+
+            getGroupMembers(
+              context: context,
+              groupId: groupId,
+            );
           },
         );
       },
@@ -377,6 +471,8 @@ class HomeController extends GetxController {
         );
       },
       (r) {
+        Get.back();
+
         Get.to(
           () => TransferSucessScreen(
             type: type,
@@ -480,8 +576,13 @@ class HomeController extends GetxController {
   RxBool loadingDetailsError = false.obs;
   final trnxDetailsModel = Rxn<TransactionCodeDetailsModel>();
 
-  getTrxnDetailsViaCode(
-      {required BuildContext context, required String code}) async {
+  getTrxnDetailsViaCode({
+    required BuildContext context,
+    required String code,
+    bool? inquireBtn,
+    bool? transfereScreen,
+    bool? homeView,
+  }) async {
     trnxDetailsModel.value = null;
     loadingDetails.value = true;
 
@@ -491,6 +592,9 @@ class HomeController extends GetxController {
 
     response.fold(
       (l) {
+        if (inquireBtn == null) {
+          Get.back();
+        }
         DefaultSnackbar.snackBar(
           context: context,
           message: l.errMessage,
@@ -499,10 +603,89 @@ class HomeController extends GetxController {
       },
       (r) {
         trnxDetailsModel.value = r;
+
+        if (transfereScreen ?? false) {
+          /// not null means it's username type
+          if (r.walletId != null) {
+            bool activated =
+                walletsList.any((element) => element.walletId == r.walletId!);
+            if (!activated) {
+              Get.back(result: 'Wallet ${r.walletName} is not activated');
+            } else {
+              Get.back(result: [code, r]);
+            }
+          } else {
+            Get.back(result: [code, false]);
+          }
+        } else if (homeView ?? false) {
+          if (r.walletId != null) {
+            bool activated =
+                walletsList.any((element) => element.walletId == r.walletId!);
+            if (!activated) {
+              Get.back(
+                result: 'Wallet ${r.walletName} is not activated',
+              );
+            } else {
+              Get.off(
+                TransferScreen(
+                  homeResult: [code, r],
+                ),
+              );
+              //Get.back(result: [code, r]);
+            }
+          } else {
+            Get.off(TransferScreen(homeResult: [code, false]));
+
+            // Get.back(result: [code, false]);
+          }
+        } else {
+          if (inquireBtn ?? false) {
+            Get.to(
+              () => const TransactionCodeDetails(),
+              transition: Transition.downToUp,
+              duration: const Duration(milliseconds: 400),
+            );
+          } else {
+            //from inquiry qr actn btn screen
+            //to remove the current qr Screen
+            Get.off(
+              () => const TransactionCodeDetails(),
+              transition: Transition.downToUp,
+              duration: const Duration(milliseconds: 400),
+            );
+          }
+        }
+      },
+    );
+  }
+
+  RxBool loadingInquireDetails = false.obs;
+
+  inquireTransaction({
+    required BuildContext context,
+    required String number,
+  }) async {
+    loadingInquireDetails.value = true;
+
+    final response =
+        await locators.get<TransferRepo>().getTrxnId(number: number);
+    loadingInquireDetails.value = false;
+
+    response.fold(
+      (l) {
+        DefaultSnackbar.snackBar(
+          context: context,
+          message: l.errMessage,
+          title: 'faileeed',
+        );
+      },
+      (r) {
         Get.to(
-          () => const TransactionCodeDetails(),
+          () => TransactionDetails(
+            txnId: r.toString(),
+          ),
           transition: Transition.downToUp,
-          duration: const Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 500),
         );
       },
     );
@@ -679,11 +862,131 @@ class HomeController extends GetxController {
       sortedList.value = walletsList[walletIndex.value].transactionList.where(
         (element) {
           return sender != null
-              ? element.sender.fullName.toLowerCase().contains(sender.toLowerCase())
-              : element.recipient.fullName.toLowerCase().contains(reciever!.toLowerCase());
+              ? element.sender.fullName
+                  .toLowerCase()
+                  .contains(sender.toLowerCase())
+              : element.recipient.fullName
+                  .toLowerCase()
+                  .contains(reciever!.toLowerCase());
         },
       ).toList();
     }
+  }
+
+  RxBool loadingBookingList = false.obs;
+  RxBool loadingEditBookingList = false.obs;
+
+  RxList<MemberModel> membersBook = <MemberModel>[].obs;
+  getBookingList() async {
+    loadingBookingList.value = true;
+    err.value = '';
+    final response = await locators.get<UserRepo>().getBookingList();
+    loadingBookingList.value = false;
+
+    response.fold(
+      (l) {
+        err.value = l.errMessage;
+      },
+      (r) {
+        membersBook.value = r;
+      },
+    );
+  }
+
+  addToBookingList(
+      {required String username,
+      required String nickName,
+      required BuildContext context}) async {
+    loadingEditBookingList.value = true;
+    final response = await locators
+        .get<UserRepo>()
+        .addToBookingList(username: username, nickName: nickName);
+    loadingEditBookingList.value = false;
+
+    response.fold(
+      (l) {
+        DefaultSnackbar.snackBar(
+          context: context,
+          message: l.errMessage,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      },
+      (r) {
+        AwesomeDialogUtil.sucess(
+          context: context,
+          body: r,
+          title: 'Done',
+          btnOkOnPress: () {
+            Get.back();
+            getBookingList();
+          },
+        );
+      },
+    );
+  }
+
+  editBookingList(
+      {required String memberId,
+      required String nickName,
+      required BuildContext context}) async {
+    loadingEditBookingList.value = true;
+    final response = await locators
+        .get<UserRepo>()
+        .editBookingList(memberId: memberId, nickName: nickName);
+    loadingEditBookingList.value = false;
+
+    response.fold(
+      (l) {
+        DefaultSnackbar.snackBar(
+          context: context,
+          message: l.errMessage,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      },
+      (r) {
+        AwesomeDialogUtil.sucess(
+          context: context,
+          body: r,
+          title: 'Done',
+          btnOkOnPress: () {
+            Get.back();
+            getBookingList();
+          },
+        );
+      },
+    );
+  }
+
+  RxBool loadingDeleteBookingList = false.obs;
+  deleteFromBookingList({
+    required BuildContext context,
+    required String memberId,
+  }) async {
+    loadingDeleteBookingList.value = true;
+
+    final response = await locators.get<UserRepo>().deleteFromBookingList(
+          memberId: memberId,
+        );
+    loadingDeleteBookingList.value = false;
+
+    response.fold(
+      (l) {
+        DefaultSnackbar.snackBar(
+          context: context,
+          message: l.errMessage,
+        );
+      },
+      (r) {
+        AwesomeDialogUtil.sucess(
+          context: context,
+          body: r,
+          title: 'Done',
+          btnOkOnPress: () {
+            getBookingList();
+          },
+        );
+      },
+    );
   }
 }
 

@@ -37,7 +37,7 @@ class TransactionList extends StatelessWidget {
               AutoSizeText(
                 maxLines: 2,
                 title,
-                style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
+                style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
@@ -52,7 +52,7 @@ class TransactionList extends StatelessWidget {
                     child: AutoSizeText(
                       subTitle,
                       maxLines: 2,
-                      style: Theme.of(Get.context!).textTheme.caption!.copyWith(
+                      style: Theme.of(Get.context!).textTheme.titleLarge!.copyWith(
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                           ),
@@ -69,7 +69,7 @@ class TransactionList extends StatelessWidget {
             children: [
               Text(
                 price,
-                style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
+                style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
@@ -81,7 +81,7 @@ class TransactionList extends StatelessWidget {
                           time.split(', ')[0],
                           style: Theme.of(Get.context!)
                               .textTheme
-                              .caption!
+                              .titleLarge!
                               .copyWith(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
@@ -92,7 +92,7 @@ class TransactionList extends StatelessWidget {
                           time.split(', ')[1],
                           style: Theme.of(Get.context!)
                               .textTheme
-                              .caption!
+                              .titleLarge!
                               .copyWith(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,

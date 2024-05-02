@@ -13,16 +13,16 @@ class NoDataScreen extends StatelessWidget {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Text(
         title,
-        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+        style: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).textTheme.caption!.color,
+              color: Theme.of(context).textTheme.titleLarge!.color,
             ),
       ),
       TextButton(
         onPressed: onRefresh,
         child: Text(
           AppLocalizations.of(context)!.refresh,
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w400,
                 color: AppTheme.isLightTheme
                     ? HexColor(AppTheme.primaryColorString!)

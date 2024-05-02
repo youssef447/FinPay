@@ -46,6 +46,15 @@ class TransfereServices {
     );
   }
 
+  ///transaction_number:
+  Future<Response> getTxnId({required Map<String, dynamic> body}) async {
+    return await HttpHelper.postData(
+      endPointUrl:
+          '${ApiEndPoints.transferEndPoint}/transaction-inquire.php',
+      userToken: currentUser.token,
+      data: body,
+    );
+  }
   ///group_name,group_about
   Future<Response> createGroup({required Map<String, dynamic> body}) async {
     return await HttpHelper.postData(

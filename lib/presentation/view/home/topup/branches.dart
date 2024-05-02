@@ -74,7 +74,7 @@ class BranchesTap extends StatelessWidget {
                                           .branches[index].branchName,
                                       style: Theme.of(Get.context!)
                                           .textTheme
-                                          .caption!
+                                          .titleLarge!
                                           .copyWith(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
@@ -87,7 +87,7 @@ class BranchesTap extends StatelessWidget {
                                           .split(' ')[0],
                                       style: Theme.of(Get.context!)
                                           .textTheme
-                                          .caption!
+                                          .titleLarge!
                                           .copyWith(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400,
@@ -114,7 +114,7 @@ class BranchesTap extends StatelessWidget {
                                     maxLines: 2,
                                     style: Theme.of(Get.context!)
                                         .textTheme
-                                        .caption!
+                                        .titleLarge!
                                         .copyWith(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w400,

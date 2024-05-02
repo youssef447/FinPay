@@ -7,14 +7,14 @@ import 'package:finpay/widgets/indicator_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../widgets/custom_button.dart';
 
 class CreatePinScreen extends StatefulWidget {
-  final bool? resetPin, transfere;
+  final bool? transfere;
 
-  const CreatePinScreen({Key? key, this.resetPin,  this.transfere})
-      : super(key: key);
+  const CreatePinScreen({Key? key, this.transfere}) : super(key: key);
 
   @override
   State<CreatePinScreen> createState() => _CreatePinScreenState();
@@ -46,7 +46,13 @@ class _CreatePinScreenState extends State<CreatePinScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        foregroundColor:
+            AppTheme.isLightTheme == false ? Colors.white : Colors.black,
+        backgroundColor: AppTheme.isLightTheme == false
+            ? const Color(0xff15141F)
+            : Colors.white,
+      ),
       body: InkWell(
         focusColor: Colors.transparent,
         highlightColor: Colors.transparent,
@@ -69,7 +75,6 @@ class _CreatePinScreenState extends State<CreatePinScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-               
                 const Spacer(),
                 Center(
                   child: Column(
@@ -77,9 +82,9 @@ class _CreatePinScreenState extends State<CreatePinScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Create New Pin",
+                        AppLocalizations.of(context)!.create_a_pin_code,
                         style:
-                            Theme.of(context).textTheme.headline6!.copyWith(
+                            Theme.of(context).textTheme.headlineLarge!.copyWith(
                                   fontWeight: FontWeight.w800,
                                   fontSize: 24,
                                 ),
@@ -88,16 +93,13 @@ class _CreatePinScreenState extends State<CreatePinScreen> {
                         height: 4,
                       ),
                       Text(
-                        "Add a pin number to make your wallet more secure",
+                        AppLocalizations.of(context)!.create_pin_msg,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
                               color:
-                                  Theme.of(context).textTheme.caption!.color,
+                                  Theme.of(context).textTheme.titleLarge!.color,
                             ),
                       ),
                       const SizedBox(
@@ -111,7 +113,7 @@ class _CreatePinScreenState extends State<CreatePinScreen> {
                           length: 6,
                           validator: (val) {
                             if (val!.length < 6) {
-                              return 'Please fill the 6 fields';
+                              return AppLocalizations.of(context)!.pin_fill_msg;
                             }
                             return null;
                           },
@@ -140,13 +142,12 @@ class _CreatePinScreenState extends State<CreatePinScreen> {
                                             pin: _pinController.text,
                                             userId: currentUser.id.toString(),
                                             context: context,
-                                            reset: widget.resetPin,
                                           );
                                   }
                                 },
                                 child: customButton(
                                   HexColor(AppTheme.primaryColorString!),
-                                  "Continue",
+                                  AppLocalizations.of(context)!.continue_,
                                   HexColor(AppTheme.secondaryColorString!),
                                   context,
                                 ),

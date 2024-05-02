@@ -114,7 +114,7 @@ class ServicesController extends GetxController {
   RxBool loadingSubscribtion = false.obs;
 
   unsubscribe(
-      {required BuildContext context, required String serviceId}) async {
+      {required BuildContext context, required String serviceId,bool?mySubs}) async {
     loadingSubscribtion.value = true;
     final response = await locators.get<ServiceRepo>().unsubscribe(
           serviceId: serviceId,
@@ -132,7 +132,7 @@ class ServicesController extends GetxController {
         body: r,
         title: 'Done',
         btnOkOnPress: () {
-          getServiceDetails(context: context, serviceId: serviceId);
+       mySubs??false? getServices(context) : getServiceDetails(context: context, serviceId: serviceId);
         },
       );
     });

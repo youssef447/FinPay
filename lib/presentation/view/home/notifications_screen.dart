@@ -3,7 +3,6 @@
 import 'package:finpay/presentation/controller/notifications_controller.dart';
 import 'package:finpay/widgets/indicator_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../../core/style/textstyle.dart';
@@ -46,13 +45,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ? Center(
                     child: Text(
                       'No Notifications yet',
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                      style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
                           ),
                     ),
                   )
                 : ListView.separated(
+                  physics: const ClampingScrollPhysics(),
                     padding: const EdgeInsets.symmetric(
                       vertical: 15,
                     ),
@@ -63,7 +63,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               controller.notifications[index].body,
                           style: Theme.of(Get.context!)
                               .textTheme
-                              .caption!
+                              .titleLarge!
                               .copyWith(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -75,7 +75,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               : controller.notifications[index].body,
                           style: Theme.of(Get.context!)
                               .textTheme
-                              .caption!
+                              .titleLarge!
                               .copyWith(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -88,7 +88,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   .split(', ')[0],
                               style: Theme.of(Get.context!)
                                   .textTheme
-                                  .caption!
+                                  .titleLarge!
                                   .copyWith(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600,
@@ -99,7 +99,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   .split(', ')[1],
                               style: Theme.of(Get.context!)
                                   .textTheme
-                                  .caption!
+                                  .titleLarge!
                                   .copyWith(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600,

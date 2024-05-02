@@ -5,6 +5,7 @@ import 'package:finpay/data/data_sources/transfere_service.dart';
 
 import '../../config/error_handler.dart';
 import '../models/group_model.dart';
+import '../models/member_model.dart';
 import '../models/transaction_code_details_model.dart';
 
 class TransferRepo {
@@ -35,17 +36,20 @@ class TransferRepo {
       );
     }
   }
-    Future<Either<Failure, List<GroupMemberModel>>> searchGroupMembers({required String groupId,String?memberName}) async {
+
+  Future<Either<Failure, List<MemberModel>>> searchGroupMembers(
+      {required String groupId, String? memberName}) async {
     try {
       final response = await _service.searchMemberName(body: {
-        'group_id':groupId,'search':memberName,
+        'group_id': groupId,
+        'search': memberName,
       });
       final decodedJson =
           json.decode(const Utf8Codec().decode(response.bodyBytes));
 
       if (decodedJson['success'] == true) {
         final list = (decodedJson['data'] as List<dynamic>).map((element) {
-          return GroupMemberModel.fromJson(element);
+          return MemberModel.fromJson(element);
         }).toList();
         return Right(list);
       } else {
@@ -89,7 +93,8 @@ class TransferRepo {
       );
     }
   }
-Future<Either<Failure, String>> addGroupMember({
+
+  Future<Either<Failure, String>> addGroupMember({
     required String userName,
     required String nickName,
     required String groupId,
@@ -98,7 +103,7 @@ Future<Either<Failure, String>> addGroupMember({
       final response = await _service.addMemeber(body: {
         'member_username': userName,
         'member_nick_name': nickName,
-         'group_id':groupId,
+        'group_id': groupId,
       });
       final decodedJson =
           json.decode(const Utf8Codec().decode(response.bodyBytes));
@@ -118,6 +123,7 @@ Future<Either<Failure, String>> addGroupMember({
       );
     }
   }
+
   Future<Either<Failure, String>> editGroup({
     required String groupName,
     required String groupId,
@@ -148,7 +154,8 @@ Future<Either<Failure, String>> addGroupMember({
       );
     }
   }
-Future<Either<Failure, String>> editGroupMember({
+
+  Future<Either<Failure, String>> editGroupMember({
     required String nickName,
     required String groupMemberId,
     required String groupId,
@@ -178,6 +185,7 @@ Future<Either<Failure, String>> editGroupMember({
       );
     }
   }
+
   Future<Either<Failure, String>> deleteGroup({
     required String groupId,
   }) async {
@@ -205,7 +213,8 @@ Future<Either<Failure, String>> editGroupMember({
       );
     }
   }
-Future<Either<Failure, String>> deleteGroupMember({
+
+  Future<Either<Failure, String>> deleteGroupMember({
     required String groupMemberId,
   }) async {
     try {
@@ -232,6 +241,7 @@ Future<Either<Failure, String>> deleteGroupMember({
       );
     }
   }
+
   Future<Either<Failure, String>> generateTransfereCode() async {
     try {
       final response = await _service.generateTxnCode();
@@ -266,6 +276,31 @@ Future<Either<Failure, String>> deleteGroupMember({
           TransactionCodeDetailsModel.fromJson(
             decodedJson['data'],
           ),
+        );
+      } else {
+        return left(
+          ServiceFailure(
+            decodedJson['message'],
+          ),
+        );
+      }
+    } catch (e) {
+      return left(
+        ServiceFailure(e.toString()),
+      );
+    }
+  }
+
+  Future<Either<Failure, int>> getTrxnId({required String number}) async {
+    try {
+      final response =
+          await _service.getTxnId(body: {'transaction_number': number});
+      final decodedJson =
+          json.decode(const Utf8Codec().decode(response.bodyBytes));
+
+      if (decodedJson['success'] == true) {
+        return Right(
+          decodedJson['transaction_id'],
         );
       } else {
         return left(

@@ -8,7 +8,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_textformfield.dart';
 import '../../../widgets/indicator_loading.dart';
-import '../home/widget/qr_scanner.dart';
 
 class TransactionInquireDetails extends StatefulWidget {
   const TransactionInquireDetails({super.key});
@@ -18,8 +17,7 @@ class TransactionInquireDetails extends StatefulWidget {
       _TransactionInquireDetailsState();
 }
 
-class _TransactionInquireDetailsState
-    extends State<TransactionInquireDetails> {
+class _TransactionInquireDetailsState extends State<TransactionInquireDetails> {
   final codeController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final homeController = Get.find<HomeController>();
@@ -28,31 +26,19 @@ class _TransactionInquireDetailsState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.isLightTheme == false
-                ? const Color(0xff323045)
-                : Theme.of(context).canvasColor, /*  AppTheme.isLightTheme == false
-          ? const Color(0xff211F32)
-          : Colors.white.withOpacity(0.9), */
+          ? const Color(0xff323045)
+          : Theme.of(context).canvasColor,
       appBar: AppBar(
         foregroundColor: AppTheme.isLightTheme ? Colors.black : Colors.white,
         backgroundColor: Colors.transparent,
         title: Text(
           AppLocalizations.of(context)!.inquire_details,
-          style: Theme.of(context).textTheme.headline6!.copyWith(
+          style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                 fontWeight: FontWeight.w800,
                 fontSize: 15,
               ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.qr_code_scanner_rounded),
-            onPressed: () async {
-              String? qrCode = await Get.to(() => const QrScannerView());
-              if (qrCode != null) {
-                codeController.text = qrCode;
-              }
-            },
-          ),
-        ],
+       
       ),
       body: Center(
         child: Container(
@@ -61,9 +47,9 @@ class _TransactionInquireDetailsState
           padding: const EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
-            color:  AppTheme.isLightTheme == false
-          ? const Color(0xff211F32)
-          : HexColor(AppTheme.primaryColorString!).withOpacity(0.7),
+            color: AppTheme.isLightTheme == false
+                ? const Color(0xff211F32)
+                : HexColor(AppTheme.primaryColorString!).withOpacity(0.7),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -76,10 +62,12 @@ class _TransactionInquireDetailsState
               Form(
                 key: formKey,
                 child: CustomTextFormField(
-                  fillColor: AppTheme.isLightTheme==false? const Color(0xff323045):Theme.of(context).canvasColor.withOpacity(0.7),
-                  hintText: AppLocalizations.of(context)!.code,
+                  fillColor: AppTheme.isLightTheme == false
+                      ? const Color(0xff323045)
+                      : Theme.of(context).canvasColor.withOpacity(0.7),
+                  hintText: AppLocalizations.of(context)!.num,
                   prefix: Icon(
-                    Icons.code,
+                    Icons.numbers,
                     color: AppTheme.isLightTheme
                         ? HexColor(AppTheme.primaryColorString!)
                         : Colors.white,
@@ -89,22 +77,25 @@ class _TransactionInquireDetailsState
                   inputType: TextInputType.text,
                   validator: (val) {
                     if (val!.trim().isEmpty) {
-                      return 'code required';
+                     return AppLocalizations.of(context)!.num_required;
                     }
                     return null;
                   },
                 ),
               ),
               Obx(
-                () => homeController.loadingDetails.value
+                () => homeController.loadingInquireDetails.value
                     ? const IndicatorBlurLoading()
                     : GestureDetector(
-                        onTap: () {
+                        onTap: ()  {
                           if (formKey.currentState!.validate()) {
-                            homeController.getTrxnDetailsViaCode(
+                          homeController.inquireTransaction(
                               context: context,
-                              code: codeController.text,
+                              number: codeController.text,
                             );
+                                              
+
+                          
                           }
                         },
                         child: customButton(

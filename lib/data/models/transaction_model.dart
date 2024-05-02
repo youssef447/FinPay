@@ -1,26 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class FakeTransactionModel {
-  final Color? background;
-  final String image = 'assets/images/transaction.svg';
-  final String? title;
 
-  final String? subTitle;
-  final String? price;
-
-  final String? time;
-
-  FakeTransactionModel(
-      this.background, this.title, this.subTitle, this.price, this.time);
-}
 
 class TransactionModel {
   late final int id;
   late final String creationDate;
   final String image = 'assets/images/transaction.svg';
   late final String originalCreationDate;
-
+  late final int walletId;
+  String? transactionCode;
   late final String transactionNumber;
   late final String amount;
   late final String walletCurrency;
@@ -32,17 +20,20 @@ class TransactionModel {
 
   TransactionModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    originalCreationDate=json["creationTime"];
+    transactionCode = json["transaction_code"];
+    originalCreationDate = json["creationTime"];
     creationDate = DateFormat('M/d/y, hh:mm aa')
         .format(DateTime.parse(json['creationTime']));
     transactionNumber = json["transaction_number"];
+        walletId = json["wallet"]['id'];
+
     walletCurrency = json["wallet"]['wallet_currency'];
+    walletName = json["wallet"]['wallet_name'];
 
     amount = '${json["amount"]} $walletCurrency';
     sender = TransactorModel.fromJson(json["sender"]);
     recipient = TransactorModel.fromJson(json["recipient"]);
 
-    walletName = json["wallet"]['wallet_name'];
 
     transactionType = json["transaction_type"];
   }

@@ -1,3 +1,4 @@
+import 'package:finpay/config/services/local/awesomeNotificationService.dart';
 import 'package:finpay/config/services/local/local_biometric.dart';
 import 'package:finpay/data/data_sources/location_service.dart';
 import 'package:finpay/data/data_sources/manage_services_service.dart';
@@ -50,5 +51,8 @@ configurationDependencies() {
   );
   locators.registerLazySingleton<LocationService>(
     () => LocationService(),
+  );
+  locators.registerLazySingleton<AwesomeNotificationService>(
+    () => AwesomeNotificationService(),
   );
 }

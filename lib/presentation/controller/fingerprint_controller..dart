@@ -10,26 +10,39 @@ import '../../core/utils/default_snackbar.dart';
 
 class FingerPrintController extends GetxController {
   verifyFingerprint(BuildContext context) async {
-    final response = await locators.get<BiometricService>().verifyFingerPrint();
-    response.fold(
-      (l) {
-        if (!l.errMessage.contains('cancelled')) {
-          DefaultSnackbar.snackBar(
-            context: context,
-            message: l.errMessage,
-            snackPosition: SnackPosition.TOP,
+    final availableBiometric =
+        await locators.get<BiometricService>().availableBiometric();
+    if (availableBiometric) {
+      final response =
+          await locators.get<BiometricService>().verifyFingerPrint();
+      response.fold(
+        (l) {
+          if (!l.errMessage.contains('cancelled')) {
+            DefaultSnackbar.snackBar(
+              context: context,
+              message: l.errMessage,
+              snackPosition: SnackPosition.TOP,
+            );
+          }
+        },
+        (r) {
+          Get.offAll(
+            () => const TabScreen(),
+            transition: Transition.rightToLeftWithFade,
+            duration: const Duration(
+              milliseconds: 500,
+            ),
           );
-        }
-      },
-      (r) {
-        Get.offAll(
-          () => const TabScreen(),
-          transition: Transition.rightToLeftWithFade,
-          duration: const Duration(
-            milliseconds: 500,
-          ),
-        );
-      },
-    );
+        },
+      );
+    } else {
+      Get.offAll(
+        const TabScreen(),
+        transition: Transition.rightToLeft,
+        duration: const Duration(
+          milliseconds: 500,
+        ),
+      );
+    }
   }
 }

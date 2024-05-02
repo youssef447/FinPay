@@ -4,6 +4,7 @@ import 'package:finpay/presentation/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/style/textstyle.dart';
 
@@ -18,11 +19,6 @@ class TransactionCodeDetails extends StatefulWidget {
 
 class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
   final controller = Get.find<HomeController>();
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +28,13 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
         foregroundColor:
             AppTheme.isLightTheme == false ? Colors.white : Colors.black,
         title: Text(
-          'Transaction Details',
+          AppLocalizations.of(context)!.transaction_details,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(),
         ),
       ),
       backgroundColor: AppTheme.isLightTheme == false
           ? const Color(0xff211F32)
-          : Colors.white.withOpacity(0.9),
+          : Colors.white,
       body: SafeArea(
         child: Obx(
           () => Center(
@@ -50,7 +46,7 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
                 borderRadius: BorderRadius.circular(25),
                 color: AppTheme.isLightTheme == false
                     ? const Color(0xff323045)
-                    : Theme.of(context).canvasColor.withOpacity(0.95),
+                    : HexColor(AppTheme.secondaryColorString!),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -63,7 +59,7 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
                   const SizedBox(height: 5),
                   Text(
                     controller.trnxDetailsModel.value!.username ?? 'N/A',
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           fontSize: 20,
                         ),
                   ),
@@ -73,10 +69,11 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "amount",
+                            AppLocalizations.of(context)!
+                                              .price,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText1!
+                                .bodySmall!
                                 .copyWith(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
@@ -87,7 +84,7 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
                                 ? '${controller.trnxDetailsModel.value!.amount} ${controller.trnxDetailsModel.value!.walletCurrency}'
                                 : 'N/A',
                             style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -98,7 +95,7 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
                       Divider(
                         color: Theme.of(context)
                             .textTheme
-                            .headline6!
+                            .headlineLarge!
                             .color!
                             .withOpacity(0.08),
                       ),
@@ -107,10 +104,11 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Wallet",
+                            AppLocalizations.of(context)!
+                                              .wallet,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText1!
+                                .bodySmall!
                                 .copyWith(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
@@ -120,7 +118,7 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
                             '${controller.trnxDetailsModel.value!.walletCurrency ?? 'N/A'} ${controller.trnxDetailsModel.value!.walletName ?? 'N/A'}'
                             '',
                             style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -131,7 +129,7 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
                       Divider(
                         color: Theme.of(context)
                             .textTheme
-                            .headline6!
+                            .headlineLarge!
                             .color!
                             .withOpacity(0.08),
                       ),
@@ -140,10 +138,11 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "type",
+                           AppLocalizations.of(context)!
+                                              .type,
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText1!
+                                .bodySmall!
                                 .copyWith(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
@@ -152,7 +151,7 @@ class _TransactionCodeDetailsState extends State<TransactionCodeDetails> {
                           Text(
                             controller.trnxDetailsModel.value!.type ?? 'N/A',
                             style:
-                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                     ),

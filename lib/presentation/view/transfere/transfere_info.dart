@@ -2,6 +2,7 @@
 
 import 'package:finpay/presentation/controller/home_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:swipe/swipe.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class TransfereInfo extends StatefulWidget {
   final String hintText;
   final bool? isGroup;
+  final TextEditingController amountController;
   final GlobalKey<FormState> formKey;
   final bool? isCode;
 
@@ -27,6 +29,7 @@ class TransfereInfo extends StatefulWidget {
     this.isGroup,
     this.nameController,
     this.codeController,
+    required this.amountController,
   });
 
   @override
@@ -34,15 +37,14 @@ class TransfereInfo extends StatefulWidget {
 }
 
 class _TransfereInfoState extends State<TransfereInfo> {
-  late TextEditingController amountController;
   late final HomeController homeController;
 
   @override
   void initState() {
     super.initState();
-    amountController = TextEditingController();
+    //widget.amountController.clear();
     homeController = Get.find<HomeController>();
-    homeController.selectedGroupName =null;
+    homeController.selectedGroupName = null;
   }
 
   @override
@@ -56,10 +58,9 @@ class _TransfereInfoState extends State<TransfereInfo> {
                   () => homeController.loadingGroups.value
                       ? const LinearProgressIndicator()
                       : DropdownMenu<int>(
-                          hintText:
-                               AppLocalizations.of(context)!.pick_group,
+                          hintText: AppLocalizations.of(context)!.pick_group,
                           textStyle:
-                              Theme.of(context).textTheme.headline6!.copyWith(
+                              Theme.of(context).textTheme.headlineLarge!.copyWith(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
@@ -84,12 +85,11 @@ class _TransfereInfoState extends State<TransfereInfo> {
                               suffixIconColor: Colors.white,
                               hintStyle: Theme.of(context)
                                   .textTheme
-                                  .headline6!
+                                  .headlineLarge!
                                   .copyWith(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white),
-                              
                               filled: true,
                               fillColor: AppTheme.isLightTheme == false
                                   ? const Color(0xff323045)
@@ -123,13 +123,16 @@ class _TransfereInfoState extends State<TransfereInfo> {
                       ? const Color(0xff323045)
                       : HexColor(AppTheme.primaryColorString!)
                           .withOpacity(0.05),
-                  textEditingController:
-                      widget.isCode??false ? widget.codeController! : widget.nameController!,
+                  textEditingController: widget.isCode ?? false
+                      ? widget.codeController!
+                      : widget.nameController!,
                   autoValidate: false,
                   inputType: TextInputType.name,
                   validator: (val) {
                     if (val!.trim().isEmpty) {
-                      return widget.isCode??false ? 'code required' : 'name required';
+                      return widget.isCode ?? false
+                          ? AppLocalizations.of(context)!.code_required
+                          :  AppLocalizations.of(context)!.name_required;
                     }
                     return null;
                   },
@@ -163,7 +166,7 @@ class _TransfereInfoState extends State<TransfereInfo> {
                           e.name,
                           style: Theme.of(context)
                               .textTheme
-                              .headline6!
+                              .headlineLarge!
                               .copyWith(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -186,9 +189,10 @@ class _TransfereInfoState extends State<TransfereInfo> {
             fillColor: AppTheme.isLightTheme == false
                 ? const Color(0xff323045)
                 : HexColor(AppTheme.primaryColorString!).withOpacity(0.05),
-            hintText:  AppLocalizations.of(context)!.price,
-            textEditingController: amountController,
+            hintText: AppLocalizations.of(context)!.price,
+            textEditingController: widget.amountController,
             inputType: TextInputType.number,
+            limit: [FilteringTextInputFormatter.digitsOnly],
             autoValidate: false,
             prefix: Obx(
               () => Padding(
@@ -204,11 +208,11 @@ class _TransfereInfoState extends State<TransfereInfo> {
               ),
             ),
             validator: (val) {
-              if (widget.isCode??false) {
+              if (widget.isCode ?? false) {
                 return null;
               }
               if (val!.isEmpty) {
-                return 'amount required';
+                return AppLocalizations.of(context)!.amount_required;
               }
               return null;
             },
@@ -220,6 +224,7 @@ class _TransfereInfoState extends State<TransfereInfo> {
             () => homeController.method.value == Method.none
                 ? const SizedBox()
                 : Swipe(
+                  horizontalMinDisplacement: 30,
                     onSwipeRight: () {
                       if (homeController.selectedGroupName != null &&
                           widget.isGroup != null &&
@@ -233,7 +238,7 @@ class _TransfereInfoState extends State<TransfereInfo> {
                             context: context,
                             amountCurrency:
                                 homeController.pickedWalletCurrency.value,
-                            amount: amountController.text,
+                            amount: widget.amountController.text,
                             recipient: homeController.selectedGroupName!,
                             wallet: homeController.pickedWalletName.value,
                             type: 'group',
@@ -249,12 +254,14 @@ class _TransfereInfoState extends State<TransfereInfo> {
                                 homeController.pickedWalletId.value.toString(),
                             amountCurrency:
                                 homeController.pickedWalletCurrency.value,
-                            amount: amountController.text,
-                            recipient: widget.isCode??false
+                            amount: widget.amountController.text,
+                            recipient: widget.isCode ?? false
                                 ? widget.codeController!.text
                                 : widget.nameController!.text,
                             wallet: homeController.pickedWalletName.value,
-                            type: widget.isCode??false ? 'transaction_code' : 'username',
+                            type: widget.isCode ?? false
+                                ? 'transaction_code'
+                                : 'username',
                           ),
                         );
                       }
@@ -302,10 +309,10 @@ class _TransfereInfoState extends State<TransfereInfo> {
                             ),
                             const Spacer(),
                             Text(
-                              "Swipe to transfer",
+                               AppLocalizations.of(context)!.swipe_to_transfere,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodySmall!
                                   .copyWith(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,

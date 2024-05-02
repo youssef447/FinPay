@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../widgets/custom_button.dart';
 import '../../controller/pass_reset_controller.dart';
@@ -77,9 +78,9 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Password Recovery",
+                          AppLocalizations.of(context)!.password_recovery,
                           style:
-                              Theme.of(context).textTheme.headline6!.copyWith(
+                              Theme.of(context).textTheme.headlineLarge!.copyWith(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 24,
                                   ),
@@ -88,11 +89,11 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                           height: 4,
                         ),
                         Text(
-                          "Enter your email to recover your password",
+                          AppLocalizations.of(context)!.password_recovery_msg,
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText2!
+                              .bodyMedium!
                               .copyWith(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
@@ -115,7 +116,8 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                                 // color:  HexColor(AppTheme.secondaryColorString!)
                               ),
                             ),
-                            hintText: "email address",
+                            hintText:
+                                AppLocalizations.of(context)!.email_address,
                             inputType: TextInputType.emailAddress,
                             textEditingController: emailController,
                             capitalization: TextCapitalization.none,
@@ -137,7 +139,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                           },
                           child: customButton(
                               HexColor(AppTheme.primaryColorString!),
-                              "Continue",
+                              AppLocalizations.of(context)!.continue_,
                               HexColor(AppTheme.secondaryColorString!),
                               context),
                         ),

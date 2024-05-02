@@ -14,7 +14,7 @@ Widget customButton(Color bgClr, String text, Color txtClr, BuildContext context
     child: Center(
       child: Text(
         text,
-        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontWeight: FontWeight.w700,
               fontSize:fontSize ??16,
               color: txtClr,

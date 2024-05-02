@@ -13,14 +13,14 @@ import 'package:image_picker/image_picker.dart';
 import '../../core/utils/default_snackbar.dart';
 import '../../data/models/wallet_model.dart';
 import '../../data/repositories/trade_repo.dart';
-import 'home_controller.dart';
 
 class TradeController extends GetxController {
   late Rxn<TraderModel> traderModel = Rxn<TraderModel>();
   Rx<File?> file = Rxn<File?>();
   late RxList<TraderServicesModel> traderServicesModel =
       <TraderServicesModel>[].obs;
-
+  late RxList<TraderServicesModel> sortedTraderServices =
+      <TraderServicesModel>[].obs;
   RxBool loading = false.obs;
 
   RxString error = ''.obs;
@@ -32,19 +32,23 @@ class TradeController extends GetxController {
     final response = await locators.get<TraderRepo>().getTrades();
     loading.value = false;
 
-    response.fold((l) {
-      DefaultSnackbar.snackBar(
-        context: context,
-        message: l.errMessage,
-        snackPosition: SnackPosition.TOP,
-      );
-      error.value = l.errMessage;
-    }, (r) {
-      if (r[0] != false) {
-        traderModel.value = r[0];
-      }
-      traderServicesModel.value = r[1];
-    });
+    response.fold(
+      (l) {
+        DefaultSnackbar.snackBar(
+          context: context,
+          message: l.errMessage,
+          snackPosition: SnackPosition.TOP,
+        );
+        error.value = l.errMessage;
+      },
+      (r) {
+        if (r[0] != false) {
+          traderModel.value = r[0];
+        }
+        traderServicesModel.value = r[1];
+        sortedTraderServices.value = r[1];
+      },
+    );
   }
 
   RxBool loadingJoin = false.obs;
@@ -86,20 +90,21 @@ class TradeController extends GetxController {
     }
   }
 
-  final List<WalletModel> walletsList =
-      Get.find<HomeController>().allWalletsList;
+  late  List<WalletModel> walletsList ;
 
-  late RxInt pickedWalletId = walletsList[0].walletId.obs;
-  late RxString pickedWalletName = walletsList[0].name.obs;
-  late RxString pickedWalletCurrency = walletsList[0].currency.obs;
+  late RxInt pickedWalletId ;
+  RxInt pickedSortedWalletId = 0.obs;
+  late RxInt pickedToWalletId ;
 
-  late RxInt pickedToWalletId = walletsList[1].walletId.obs;
+  sortTrades(int walletId) {
+    pickedSortedWalletId.value = walletId;
+    sortedTraderServices.value = traderServicesModel.where((e) {
+      return e.toWalletId == walletId || e.fromWalletId == walletId;
+    }).toList();
+  }
 
   pickWallet(int id) {
-    final model = walletsList.firstWhere((element) => element.walletId == id);
     pickedWalletId.value = id;
-    pickedWalletCurrency.value = model.currency;
-    pickedWalletName.value = model.name;
   }
 
   pickToWallet(int id) {
@@ -204,10 +209,9 @@ class TradeController extends GetxController {
         context: context,
         body: r,
         title: 'Done',
-        btnOkOnPress: () {
-          Get.back();
-        },
+        duration: const Duration(seconds: 2),
       );
+      Future.delayed(const Duration(seconds: 2)).then((value) => Get.back());
     });
   }
 

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/utils/validation_helper.dart';
 import '../../../widgets/custom_button.dart';
@@ -78,9 +79,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Reset your Password",
+                          AppLocalizations.of(context)!.reset_your_password,
                           style:
-                              Theme.of(context).textTheme.headline6!.copyWith(
+                              Theme.of(context).textTheme.headlineLarge!.copyWith(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 24,
                                   ),
@@ -89,10 +90,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           height: 4,
                         ),
                         Text(
-                          "At least 6 characters, with uppercase and lowercase letters,1 special character and 1 digit",
+                         AppLocalizations.of(context)!.at_least,
                           textAlign: TextAlign.center,
                           style:
-                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
                                     color: const Color(0xffA2A0A8),
@@ -115,7 +116,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     pswdResetController.isNewVisible.value
                                         ? Icons.visibility_off_outlined
                                         : Icons.remove_red_eye
-                                    // color:  HexColor(AppTheme.secondaryColorString!)
                                     ),
                               ),
                             ),
@@ -126,10 +126,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 color: _focusNodes[0].hasFocus
                                     ? HexColor(AppTheme.primaryColorString!)
                                     : const Color(0xffA2A0A8),
-                                // color:  HexColor(AppTheme.secondaryColorString!)
                               ),
                             ),
-                            hintText: "New Password",
+                            hintText:  AppLocalizations.of(context)!.new_password,
                             obscure:
                                 pswdResetController.isNewVisible.value == true
                                     ? false
@@ -171,7 +170,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     : const Color(0xffA2A0A8),
                               ),
                             ),
-                            hintText: "Confirm Password",
+                            hintText:  AppLocalizations.of(context)!.confirm_password,
                             obscure:
                                 pswdResetController.isConfirmVisible.value ==
                                         true
@@ -182,7 +181,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             inputType: TextInputType.visiblePassword,
                             validator: (val) {
                               if (val != _pass1.text) {
-                                return 'password must match';
+                                return  AppLocalizations.of(context)!.password_must_match;
                               } else {
                                 return null;
                               }
@@ -214,7 +213,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   },
                                   child: customButton(
                                       HexColor(AppTheme.primaryColorString!),
-                                      "Continue",
+                                      AppLocalizations.of(context)!.continue_,
                                       HexColor(AppTheme.secondaryColorString!),
                                       context),
                                 ),

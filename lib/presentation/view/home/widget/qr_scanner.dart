@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:finpay/core/utils/default_snackbar.dart';
+import 'package:finpay/presentation/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QrScannerView extends StatefulWidget {
-  const QrScannerView({super.key});
+  final bool? transfereScreen, homeView;
+  const QrScannerView({super.key, this.transfereScreen, this.homeView});
 
   @override
   State<QrScannerView> createState() => _QrScannerViewState();
@@ -54,7 +57,6 @@ class _QrScannerViewState extends State<QrScannerView> {
               cutOutHeight: 200,
               cutOutWidth: 200,
             ),
-            // onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
           ),
           loading
               ? Container(
@@ -82,16 +84,17 @@ class _QrScannerViewState extends State<QrScannerView> {
           loading = true;
         });
         controller.pauseCamera().then((value) {
-          setState(() {
-            loading = true;
-          });
-          Future.delayed(const Duration(milliseconds: 600))
-              .then((value) => Get.back(result: scanData.code));
+          Get.find<HomeController>().getTrxnDetailsViaCode(
+            context: context,
+            code: scanData.code!,
+            transfereScreen: widget.transfereScreen ?? false,
+            homeView: widget.homeView ?? false,
+          );
         });
       },
       onError: (err) {
         DefaultSnackbar.snackBar(
-            context: context, message: 'error occurred while scanning');
+            context: context, message: AppLocalizations.of(context)!.qr_err);
         Get.back();
       },
       cancelOnError: false,

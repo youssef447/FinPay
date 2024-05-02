@@ -1,4 +1,4 @@
-package com.example.finpay
+package com.paytome
 
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterFragmentActivity

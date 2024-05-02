@@ -5,14 +5,14 @@ import 'package:finpay/core/style/textstyle.dart';
 import 'package:finpay/widgets/default_cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TraderList extends StatelessWidget {
   final String? image;
   final String title, price, time;
   final Widget subtitle;
   final bool? activated;
-  final Color? color;
-
+  final bool? dashboard;
   const TraderList({
     super.key,
     this.image,
@@ -21,15 +21,20 @@ class TraderList extends StatelessWidget {
     required this.price,
     required this.time,
     this.activated,
-    this.color,
+    this.dashboard,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(15.0),
       decoration: BoxDecoration(
-        color: color ?? (activated ?? false ? Colors.green : Colors.red),
+        color: AppTheme.isLightTheme == false
+            ? const Color(0xff211F32)
+            : HexColor(
+                AppTheme.primaryColorString!,
+              ).withOpacity(
+                0.9), //color ?? (activated ?? false ? Colors.green : Colors.red),
         borderRadius: BorderRadius.circular(
           15,
         ),
@@ -65,11 +70,14 @@ class TraderList extends StatelessWidget {
                 AutoSizeText(
                   maxLines: 2,
                   title,
-                  style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
+                  style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 subtitle,
               ],
@@ -81,7 +89,7 @@ class TraderList extends StatelessWidget {
               children: [
                 Text(
                   price,
-                  style: Theme.of(Get.context!).textTheme.bodyText2!.copyWith(
+                  style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -90,11 +98,33 @@ class TraderList extends StatelessWidget {
                 Text(
                   maxLines: 1,
                   time,
-                  style: Theme.of(Get.context!).textTheme.caption!.copyWith(
+                  style: Theme.of(Get.context!).textTheme.titleLarge!.copyWith(
                       fontSize: 10,
                       fontWeight: FontWeight.w400,
                       color: Colors.white),
-                )
+                ),
+                dashboard ?? false
+                    ? Column(
+                      children: [
+                        SizedBox(height: 10,),
+                        FittedBox(
+                          child: Text(
+                              activated!
+                                  ? AppLocalizations.of(context)!.activated
+                                  : AppLocalizations.of(context)!.deactivated,
+                              style: Theme.of(Get.context!)
+                                  .textTheme
+                                  .titleSmall!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color:
+                                        activated! ? Colors.greenAccent : Colors.red,
+                                  ),
+                            ),
+                        ),
+                      ],
+                    )
+                    : const SizedBox(),
               ],
             ),
           ),

@@ -8,6 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextEditingController textEditingController;
   final Widget? sufix;
   final Widget? prefix;
+  final bool?enabled;
   final bool obscure;
   final FocusNode? focusNode;
   final List<TextInputFormatter>? limit;
@@ -16,13 +17,20 @@ class CustomTextFormField extends StatelessWidget {
   final bool? readOnly;
   final bool? autoValidate;
   final Color? fillColor;
+  final TextStyle? hintStyle;
+    final TextStyle? style;
+
+  final EdgeInsetsGeometry? contentPadding;
   final String? Function(String?)? validator;
 
   const CustomTextFormField({
     Key? key,
+    this.hintStyle,
     required this.hintText,
+    this.contentPadding,
     required this.textEditingController,
     this.sufix,
+    this.enabled,
     this.prefix,
     this.obscure = false,
     this.limit,
@@ -33,7 +41,7 @@ class CustomTextFormField extends StatelessWidget {
     this.focusNode,
     this.fillColor,
     this.validator,
-    this.autoValidate,
+    this.autoValidate, this.style,
   }) : super(key: key);
 
   @override
@@ -43,12 +51,15 @@ class CustomTextFormField extends StatelessWidget {
       autovalidateMode:
           autoValidate ?? false ? AutovalidateMode.onUserInteraction : null,
       obscureText: obscure,
+      enabled: enabled,
       focusNode: focusNode,
       textCapitalization: capitalization ?? TextCapitalization.none,
       keyboardType: inputType,
       readOnly: readOnly!,
       inputFormatters: limit,
+     style: style?? Theme.of(context).textTheme.bodySmall,
       decoration: InputDecoration(
+        contentPadding: contentPadding,
         filled: true,
         fillColor: fillColor ?? (AppTheme.isLightTheme == false
             ? const Color(0xff211F32)
@@ -57,6 +68,8 @@ class CustomTextFormField extends StatelessWidget {
         suffixIcon: sufix,
         labelText: labelText,
         hintText: hintText,
+        hintStyle: hintStyle?? Theme.of(context).textTheme.bodySmall,
+      
         border: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(16)),

@@ -15,24 +15,3 @@ class GroupModel {
   }
 }
 
-class GroupMemberModel {
-  late int id;
-  late int memberId;
-  late String memberNickname, memberUsername;
-
-  GroupMemberModel({
-    required this.id,
-    required this.memberId,
-    required this.memberNickname,
-    required this.memberUsername,
-  });
-
-  factory GroupMemberModel.fromJson(dynamic json) {
-    return GroupMemberModel(
-      id: json["id"],
-      memberId: json["member_id"],
-      memberNickname: json["member_nick_name"],
-      memberUsername: json['member_username'],
-    );
-  }
-}

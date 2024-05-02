@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../core/style/textstyle.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -67,16 +68,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 left: 20,
                 right: 20,
                 top: AppBar().preferredSize.height,
+                bottom: 10,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 10,
+                  Align(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      DefaultImages.finalLogo,
+                      height: 110,
+                    ),
                   ),
                   Text(
-                    "Getting Started",
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    AppLocalizations.of(context)!.getting_started,
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: 24,
                         ),
@@ -85,8 +91,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 4,
                   ),
                   Text(
-                    "Create an account to continue!",
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    AppLocalizations.of(context)!.create_acc_to_continue,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: const Color(0xffA2A0A8),
@@ -119,19 +125,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     // color:  HexColor(AppTheme.secondaryColorString!)
                                   ),
                                 ),
-                                hintText: "Full Name",
+                                hintText:
+                                    AppLocalizations.of(context)!.full_name,
                                 inputType: TextInputType.text,
                                 textEditingController:
                                     signUpController.nameController.value,
                                 validator: (val) {
                                   if (val == null) {
-                                    return 'name required';
+                                    return AppLocalizations.of(context)!
+                                        .full_name_required;
                                   }
                                   if (val.isEmpty) {
-                                    return 'name required';
+                                    return AppLocalizations.of(context)!
+                                        .full_name_required;
                                   }
                                   if (val.length < 6) {
-                                    return 'Full Name must be at least 6 characters';
+                                    return AppLocalizations.of(context)!
+                                        .full_name_should_be_more_than_6_characters;
                                   }
                                   return null;
                                 },
@@ -147,7 +157,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       : const Color(0xffA2A0A8),
                                   // color:  HexColor(AppTheme.secondaryColorString!)
                                 ),
-                                hintText: "email address",
+                                hintText:
+                                    AppLocalizations.of(context)!.email_address,
                                 inputType: TextInputType.emailAddress,
                                 textEditingController:
                                     signUpController.emailController.value,
@@ -170,16 +181,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     // color:  HexColor(AppTheme.secondaryColorString!)
                                   ),
                                 ),
-                                hintText: "user name",
+                                hintText:
+                                    AppLocalizations.of(context)!.user_name,
                                 inputType: TextInputType.name,
                                 textEditingController:
                                     signUpController.userNameController.value,
                                 validator: (val) {
                                   if (val == null) {
-                                    return 'username required';
+                                    return AppLocalizations.of(context)!
+                                        .user_name_required;
                                   }
                                   if (val.isEmpty) {
-                                    return 'username required';
+                                    return AppLocalizations.of(context)!
+                                        .user_name_required;
                                   }
                                   return null;
                                 },
@@ -202,7 +216,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       padding: const EdgeInsets.all(14.0),
                                       child: SvgPicture.asset(
                                         DefaultImages.eye,
-                                        // color:  HexColor(AppTheme.secondaryColorString!)
                                       ),
                                     ),
                                   ),
@@ -214,10 +227,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           ? HexColor(
                                               AppTheme.primaryColorString!)
                                           : const Color(0xffA2A0A8),
-                                      // color:  HexColor(AppTheme.secondaryColorString!)
                                     ),
                                   ),
-                                  hintText: "Password",
+                                  hintText:
+                                      AppLocalizations.of(context)!.password,
                                   obscure:
                                       signUpController.isVisible.value == true
                                           ? false
@@ -283,11 +296,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     text: TextSpan(
                                       children: <TextSpan>[
                                         TextSpan(
+                                          text: AppLocalizations.of(context)!
+                                              .by_creating,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14,
+                                                color: AppTheme.isLightTheme ==
+                                                        false
+                                                    ? const Color(0xffA2A0A8)
+                                                    : const Color(0xff211F32),
+                                              ),
+                                        ),
+                                        TextSpan(
+                                          text: AppLocalizations.of(context)!
+                                              .terms,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14,
+                                                color: HexColor(
+                                                  AppTheme.primaryColorString!,
+                                                ),
+                                              ),
+                                        ),
+                                        TextSpan(
                                           text:
-                                              "By creating an account, you agree to our ",
+                                              AppLocalizations.of(context)!.and,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2!
+                                              .bodyMedium!
                                               .copyWith(
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 14,
@@ -298,39 +340,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               ),
                                         ),
                                         TextSpan(
-                                            text: "Terms",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2!
-                                                .copyWith(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14,
-                                                    color: HexColor(AppTheme
-                                                        .primaryColorString!))),
-                                        TextSpan(
-                                          text: " and ",
+                                          text: AppLocalizations.of(context)!
+                                              .conditions,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2!
+                                              .bodyMedium!
                                               .copyWith(
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 14,
-                                                color: AppTheme.isLightTheme ==
-                                                        false
-                                                    ? const Color(0xffA2A0A8)
-                                                    : const Color(0xff211F32),
+                                                color: HexColor(
+                                                  AppTheme.primaryColorString!,
+                                                ),
                                               ),
                                         ),
-                                        TextSpan(
-                                            text: "Conditions",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2!
-                                                .copyWith(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14,
-                                                    color: HexColor(AppTheme
-                                                        .primaryColorString!))),
                                       ],
                                     ),
                                   )),
@@ -345,10 +367,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   visible:
                                       signUpController.requiredAgreeMsg.value,
                                   child: Text(
-                                    'you should agree to our terms and conditions',
+                                    AppLocalizations.of(context)!.must_agree,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText2!
+                                        .bodyMedium!
                                         .copyWith(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12,
@@ -381,7 +403,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         child: customButton(
                                             HexColor(
                                                 AppTheme.primaryColorString!),
-                                            "Sign Up",
+                                            AppLocalizations.of(context)!
+                                                .sign_up_Now,
                                             HexColor(
                                                 AppTheme.secondaryColorString!),
                                             context),
@@ -404,19 +427,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text("Already have an account? ",
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .already_have_an_account,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16,
+                                              color: const Color(0xff9CA3AF),
+                                            ),
+                                      ),
+                                      Text(
+                                          " ${AppLocalizations.of(context)!.login}",
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 16,
-                                                  color:
-                                                      const Color(0xff9CA3AF))),
-                                      Text(" Login",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2!
+                                              .bodyMedium!
                                               .copyWith(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 16,
@@ -431,7 +458,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ],
                           ),
                         ),
-                                             ],
+                      ],
                     ),
                   ),
                 ],

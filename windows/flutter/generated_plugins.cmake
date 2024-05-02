@@ -3,10 +3,13 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  awesome_notifications
   file_selector_windows
+  firebase_core
   flutter_secure_storage_windows
   geolocator_windows
   local_auth_windows
+  printing
   rive_common
   share_plus
   smart_auth

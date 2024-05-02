@@ -28,12 +28,12 @@ class _ChatScreenState extends State<ChatScreen> {
           },
           child: Icon(
             Icons.arrow_back,
-            color: Theme.of(context).textTheme.headline6!.color,
+            color: Theme.of(context).textTheme.headlineLarge!.color,
           ),
         ),
         title: Text(
           "Chat Assistant",
-          style: Theme.of(context).textTheme.headline6!.copyWith(
+          style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
               ),
@@ -75,7 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               "Hi Daniel, I’m Fin 😎",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodySmall!
                                   .copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -100,7 +100,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               "I’m here to help your personal\nfinance stuff easier 💰",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodySmall!
                                   .copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -126,7 +126,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               "So, what can I help?",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodySmall!
                                   .copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -153,7 +153,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   "How to spend less?",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText1!
+                                      .bodySmall!
                                       .copyWith(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
@@ -181,7 +181,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               "I can help you with that",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodySmall!
                                   .copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -209,7 +209,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   "Introducing Finpay card! 🎉",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText1!
+                                      .bodySmall!
                                       .copyWith(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
@@ -246,7 +246,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               "A smart debit and credit card that can help save more money! 💳",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodySmall!
                                   .copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -273,7 +273,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 "more info 👀",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodySmall!
                                     .copyWith(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
@@ -309,7 +309,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         : Theme.of(context).appBarTheme.backgroundColor,
                     borderRadius: BorderRadius.circular(20)),
                 child: TextFormField(
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -323,7 +323,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                     hintText: "Say something",
-                    hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: HexColor('#A2A0A8'),

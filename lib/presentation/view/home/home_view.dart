@@ -8,6 +8,7 @@ import 'package:finpay/core/style/images_asset.dart';
 import 'package:finpay/core/style/textstyle.dart';
 import 'package:finpay/presentation/controller/home_controller.dart';
 import 'package:finpay/presentation/view/home/notifications_screen.dart';
+import 'package:finpay/presentation/view/profile/edit_profile_screen.dart';
 import 'package:finpay/presentation/view/transfere/transfer_screen.dart';
 import 'package:finpay/presentation/view/home/widget/circle_card.dart';
 import 'package:finpay/presentation/view/home/widget/debi_card.dart';
@@ -20,6 +21,7 @@ import '../../../core/utils/globales.dart';
 import '../../../widgets/default_cached_image.dart';
 import '../../../widgets/shimmer_card.dart';
 import '../../../widgets/shimmer_list_view.dart';
+import '../profile/settings/setting_screen.dart';
 import 'transaction_details.dart';
 import 'transactions_all_list.dart';
 import '../transfere/transfere_request.dart';
@@ -46,10 +48,10 @@ class HomeView extends StatelessWidget {
                       homeController.customInit(context);
                     },
                     child: Text(
-                      'error occured, Tap to refresh',
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      AppLocalizations.of(context)!.err,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.w400,
-                            color: Theme.of(context).textTheme.caption!.color,
+                            color: Theme.of(context).textTheme.titleLarge!.color,
                           ),
                     ),
                   ),
@@ -61,23 +63,45 @@ class HomeView extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            Get.to(
-                              () => const NotificationScreen(),
-                              duration: const Duration(milliseconds: 500),
-                              transition: Transition.rightToLeft,
-                            );
-                          },
-                          icon: Icon(
-                            Icons.notifications_sharp,
-                            size: 30,
-                            color: !AppTheme.isLightTheme
-                                ? Colors.white
-                                : HexColor(
-                                    AppTheme.primaryColorString!,
-                                  ),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Get.to(
+                                  () => const NotificationScreen(),
+                                  duration: const Duration(milliseconds: 500),
+                                  transition: Transition.rightToLeft,
+                                );
+                              },
+                              icon: Icon(
+                                Icons.notifications_sharp,
+                                size: 30,
+                                color: !AppTheme.isLightTheme
+                                    ? Colors.white
+                                    : HexColor(
+                                        AppTheme.primaryColorString!,
+                                      ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Get.to(
+                                  () => const SettingScreen(),
+                                  transition: Transition.rightToLeftWithFade,
+                                  duration: const Duration(milliseconds: 500),
+                                );
+                              },
+                              icon: Icon(
+                                Icons.settings,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .color,
+                                size: 25,
+                              ),
+                            ),
+                          ],
                         ),
                         Row(
                           children: [
@@ -89,12 +113,12 @@ class HomeView extends StatelessWidget {
                                     AppLocalizations.of(context)!.hi,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyText2!
+                                        .bodyMedium!
                                         .copyWith(
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
                                               .textTheme
-                                              .caption!
+                                              .titleLarge!
                                               .color,
                                         ),
                                   ),
@@ -103,19 +127,39 @@ class HomeView extends StatelessWidget {
                                     currentUser.fullName,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .headline6!
+                                        .headlineLarge!
                                         .copyWith(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 24,
                                         ),
                                   ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    currentUser.username ?? '',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          color: const Color(0xffF6A609),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
                                 ],
                               ),
                             ),
-                            DefaultCachedImage(
-                              imgUrl: currentUser.profilePicUrl,
-                              height: 50,
-                              width: 50,
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(
+                                  () => const EditProfileScreen(),
+                                  duration: const Duration(milliseconds: 400),
+                                );
+                              },
+                              child: DefaultCachedImage(
+                                imgUrl: currentUser.profilePicUrl,
+                                height: 50,
+                                width: 50,
+                              ),
                             ),
                           ],
                         ),
@@ -137,10 +181,11 @@ class HomeView extends StatelessWidget {
                                           frameRate: const FrameRate(100),
                                         ),
                                         Text(
-                                          'No wallets added yet',
+                                          AppLocalizations.of(context)!
+                                              .no_wallets_yet,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2!
+                                              .labelMedium!
                                               .copyWith(
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -221,7 +266,7 @@ class HomeView extends StatelessWidget {
                                               image: DefaultImages.withdraw,
                                               title:
                                                   AppLocalizations.of(context)!
-                                                      .withdraw,
+                                                      .request,
                                               color:
                                                   Colors.grey.withOpacity(0.33),
                                             )
@@ -245,7 +290,7 @@ class HomeView extends StatelessWidget {
                                                 image: DefaultImages.withdraw,
                                                 title: AppLocalizations.of(
                                                         context)!
-                                                    .withdraw,
+                                                    .request,
                                               ),
                                             ),
                                       homeController.walletsList.isEmpty
@@ -322,7 +367,7 @@ class HomeView extends StatelessWidget {
                                             .transactions,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline6!
+                                            .headlineLarge!
                                             .copyWith(
                                               fontSize: 18,
                                               fontWeight: FontWeight.w800,
@@ -341,13 +386,13 @@ class HomeView extends StatelessWidget {
                                               '${AppLocalizations.of(context)!.total}: ${homeController.walletsList[homeController.walletIndex.value].transactionList.length}',
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .subtitle2!
+                                                  .labelMedium!
                                                   .copyWith(
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     color: Theme.of(context)
                                                         .textTheme
-                                                        .caption!
+                                                        .titleLarge!
                                                         .color,
                                                   ),
                                             )
@@ -385,12 +430,13 @@ class HomeView extends StatelessWidget {
                                         AppLocalizations.of(context)!.see_all,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline6!
+                                            .headlineLarge!
                                             .copyWith(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,
                                               color: HexColor(
-                                                  AppTheme.primaryColorString!),
+                                                AppTheme.primaryColorString!,
+                                              ),
                                             ),
                                       ),
                                     ),
@@ -402,10 +448,10 @@ class HomeView extends StatelessWidget {
                                   ? const ShimmerListView()
                                   : homeController.txnsFetchingFailed.value
                                       ? Text(
-                                          'failed getting Transactions',
+                                          AppLocalizations.of(context)!.err,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2!
+                                              .labelMedium!
                                               .copyWith(
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -506,10 +552,12 @@ class HomeView extends StatelessWidget {
                                                 homeController
                                                         .walletsList.isEmpty
                                                     ? Text(
-                                                        'No Transactions Available',
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .no_trxn_available,
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .subtitle2!
+                                                            .bodySmall!
                                                             .copyWith(
                                                               fontWeight:
                                                                   FontWeight
@@ -517,10 +565,12 @@ class HomeView extends StatelessWidget {
                                                             ),
                                                       )
                                                     : Text(
-                                                        'No Transactions done yet by this wallet',
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .no_trxn_yet,
                                                         style: Theme.of(context)
                                                             .textTheme
-                                                            .subtitle2!
+                                                            .bodySmall!
                                                             .copyWith(
                                                               fontWeight:
                                                                   FontWeight

@@ -36,7 +36,7 @@ class CustomTextField extends StatelessWidget {
         keyboardType: inputType,
         obscureText: isObsecure,
         controller: textEditingController,
-        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -46,7 +46,7 @@ class CustomTextField extends StatelessWidget {
           prefixIcon: widget ?? const SizedBox(),
           suffixIcon: sufix ?? const SizedBox(),
           hintText: hintText,
-          hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
+          hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 color: HexColor('#A2A0A8'),

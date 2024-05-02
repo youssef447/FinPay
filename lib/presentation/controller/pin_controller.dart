@@ -1,10 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:finpay/config/injection.dart';
-import 'package:finpay/config/services/local/local_biometric.dart';
 import 'package:finpay/core/utils/globales.dart';
 import 'package:finpay/data/repositories/auth_repo.dart';
-import 'package:finpay/presentation/view/login/fingerprint_screen.dart';
 import 'package:finpay/presentation/view/login/verify_reset_pswd_screen.dart';
 import 'package:finpay/presentation/view/tab_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +21,6 @@ class PinController extends GetxController {
     required String userId,
     required String pin,
     required BuildContext context,
-    bool? reset,
   }) async {
     loading.value = true;
 
@@ -38,35 +35,13 @@ class PinController extends GetxController {
         title: 'failed',
       );
     }, (r) async {
-      if (reset ?? false) {
-        final availableBiometric =
-            await locators.get<BiometricService>().availableBiometric();
-        if (availableBiometric) {
-          Get.offAll(
-            const FingerPrintScreen(),
-            transition: Transition.rightToLeft,
-            duration: const Duration(
-              milliseconds: 500,
-            ),
-          );
-        } else {
-          Get.offAll(
-            const TabScreen(),
-            transition: Transition.rightToLeft,
-            duration: const Duration(
-              milliseconds: 500,
-            ),
-          );
-        }
-      } else {
-        Get.offAll(
-          const FingerPrintScreen(),
-          transition: Transition.rightToLeft,
-          duration: const Duration(
-            milliseconds: 500,
-          ),
-        );
-      }
+      Get.offAll(
+        const TabScreen(),
+        transition: Transition.rightToLeft,
+        duration: const Duration(
+          milliseconds: 500,
+        ),
+      );
     });
   }
 
@@ -74,7 +49,6 @@ class PinController extends GetxController {
     required String userId,
     required String pin,
     required BuildContext context,
-    bool? reset,
   }) async {
     loading.value = true;
 
@@ -109,9 +83,9 @@ class PinController extends GetxController {
         title: 'failed',
       );
     }, (r) {
-      Get.to(
-        () => const FingerPrintScreen(),
-        transition: Transition.rightToLeft,
+      Get.offAll(
+        () => const TabScreen(),
+        transition: Transition.rightToLeftWithFade,
         duration: const Duration(
           milliseconds: 500,
         ),
@@ -138,7 +112,7 @@ class PinController extends GetxController {
         () => transfere ?? false
             ? VerifyResetPswdScreen(
                 email: currentUser.email,
-                transfere: true,
+                transfere: true,//transfere
               )
             : VerifyResetPswdScreen(
                 email: currentUser.email,

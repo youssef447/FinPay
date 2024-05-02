@@ -35,12 +35,9 @@ class TopupController extends GetxController {
   }
 
   RxBool loadingPosition = false.obs;
-  LatLng center = const LatLng(33.513805, 36.276527);
-  Rx<MapOptions> mapOptions = const MapOptions(
-    initialCenter: LatLng(33.513805, 36.276527),
-    zoom: 15,
-  ).obs;
-  getCurrentLocation({required BuildContext context}) async {
+ Rx< LatLng> center = const LatLng(33.513805, 36.276527).obs;
+ 
+  getCurrentLocation({required BuildContext context,required MapController  controller }) async {
     try {
       loadingPosition.value = true;
       final response = await locators.get<LocationService>().getPosition();
@@ -53,11 +50,9 @@ class TopupController extends GetxController {
           snackPosition: SnackPosition.BOTTOM,
         );
       } else if (context.mounted && response is Position) {
-        center = LatLng(response.latitude, response.longitude);
-        mapOptions.value = MapOptions(
-          initialCenter: center,
-          zoom: 15,
-        );
+        center.value = LatLng(response.latitude, response.longitude);
+        controller.move(center.value, 15,);
+      
       }
     } catch (e) {
       loadingPosition.value = false;

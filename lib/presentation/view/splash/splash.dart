@@ -5,8 +5,8 @@ import 'package:finpay/core/style/images_asset.dart';
 import 'package:finpay/core/style/textstyle.dart';
 import 'package:finpay/presentation/view/splash/welcome_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -23,8 +23,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void init() async {
-    Timer(const Duration(seconds: 3,), () {
-      Get.offAll(() => const WelcomeFirstScreen(),);
+    Timer(
+        const Duration(
+          seconds: 3,
+        ), () {
+      Get.offAll(
+        () => const WelcomeFirstScreen(),
+      );
     });
   }
 
@@ -41,22 +46,25 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           children: [
             const Spacer(),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 40,
-                  width: 40,
-                  child: SvgPicture.asset(DefaultImages.logo,
+                  height: 100,
+                  width: 150,
+                  child: Image.asset(DefaultImages.finalLogo,
                       color: HexColor(AppTheme.secondaryColorString!)),
                 ),
                 const SizedBox(width: 8),
-                SizedBox(
-                  height: 40,
-                  width: 130,
-                  child: SvgPicture.asset(DefaultImages.text,
-                      color: HexColor(AppTheme.secondaryColorString!)),
+                Text(
+                  AppLocalizations.of(context)!.pay_to_me,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                        color: const Color(0xffDCDBE0),
+                      ),
                 ),
               ],
             ),
@@ -64,9 +72,9 @@ class _SplashScreenState extends State<SplashScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 48, right: 48, bottom: 20),
               child: Text(
-                "FinPay is a financial platform to manage your business and money.",
+                AppLocalizations.of(context)!.app_description,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                       color: const Color(0xffDCDBE0),

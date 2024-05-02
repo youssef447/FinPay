@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:finpay/core/style/images_asset.dart';
 import 'package:finpay/core/style/textstyle.dart';
 import 'package:finpay/presentation/controller/tab_controller.dart';
@@ -9,6 +10,7 @@ import 'package:finpay/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WelcomeFirstScreen extends StatefulWidget {
   const WelcomeFirstScreen({Key? key}) : super(key: key);
@@ -43,12 +45,12 @@ class _WelcomeFirstScreenState extends State<WelcomeFirstScreen> {
                 children: [
                   Text(
                     slideController.i.value == 0
-                        ? "Welcome to FinPay"
-                        : "Budgeting",
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        ? AppLocalizations.of(context)!.app_welcome
+                        :   AppLocalizations.of(context)!.budgeting,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
-                          color: Theme.of(context).textTheme.caption!.color,
+                          color: Theme.of(context).textTheme.titleLarge!.color,
                         ),
                   ),
                   InkWell(
@@ -66,9 +68,9 @@ class _WelcomeFirstScreenState extends State<WelcomeFirstScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          "Skip",
+                          AppLocalizations.of(context)!.skip,
                           style:
-                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14,
                                     color: AppTheme.isLightTheme == false
@@ -88,11 +90,11 @@ class _WelcomeFirstScreenState extends State<WelcomeFirstScreen> {
                     slideController.i.value == 0
                         ? SizedBox(
                             height: 150,
-                            child: Text(
-                              "Managing your money is about to get a lot better.",
+                            child: AutoSizeText(
+                              AppLocalizations.of(context)!.splash_title,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2!
+                                  .bodyMedium!
                                   .copyWith(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 32,
@@ -101,11 +103,11 @@ class _WelcomeFirstScreenState extends State<WelcomeFirstScreen> {
                           )
                         : SizedBox(
                             height: 150,
-                            child: Text(
-                              "Spend smarter every day, all from one app. ",
+                            child: AutoSizeText(
+                                  AppLocalizations.of(context)!.splash_title_two,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2!
+                                  .bodyMedium!
                                   .copyWith(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 32,
@@ -178,8 +180,11 @@ class _WelcomeFirstScreenState extends State<WelcomeFirstScreen> {
                 onTap: () {
                   Get.offAll(const LoginScreen());
                 },
-                child: customButton(HexColor(AppTheme.primaryColorString!),
-                    "Login", HexColor(AppTheme.secondaryColorString!), context),
+                child: customButton(
+                    HexColor(AppTheme.primaryColorString!),
+                    AppLocalizations.of(context)!.login,
+                    HexColor(AppTheme.secondaryColorString!),
+                    context),
               ),
               const SizedBox(
                 height: 16,
@@ -196,7 +201,7 @@ class _WelcomeFirstScreenState extends State<WelcomeFirstScreen> {
                     AppTheme.isLightTheme == false
                         ? const Color(0xff52525C)
                         : const Color(0xffF5F7FE),
-                    "Create an account",
+                    AppLocalizations.of(context)!.create_new_account,
                     AppTheme.isLightTheme == false
                         ? Colors.white
                         : HexColor(AppTheme.primaryColorString!),

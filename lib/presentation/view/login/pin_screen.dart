@@ -2,6 +2,7 @@
 
 import 'package:finpay/core/style/textstyle.dart';
 import 'package:finpay/presentation/controller/pin_controller.dart';
+import 'package:finpay/presentation/view/login/fingerprint_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -81,17 +82,14 @@ class _VerifyPinScreenState extends State<VerifyPinScreen> {
                 right: 20,
                 top: AppBar().preferredSize.height,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    
                     children: [
                       Text(
                         AppLocalizations.of(context)!.enterPin,
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                        style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                               fontWeight: FontWeight.w800,
                               fontSize: 24,
                             ),
@@ -122,7 +120,7 @@ class _VerifyPinScreenState extends State<VerifyPinScreen> {
                           Text(
                             AppLocalizations.of(context)!.i_forgot_my_pin,
                             style:
-                                Theme.of(context).textTheme.caption!.copyWith(
+                                Theme.of(context).textTheme.titleMedium!.copyWith(
                                       fontWeight: FontWeight.w600,
                                     ),
                           ),
@@ -142,7 +140,7 @@ class _VerifyPinScreenState extends State<VerifyPinScreen> {
                                       AppLocalizations.of(context)!.reset,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .caption!
+                                          .titleLarge!
                                           .copyWith(
                                             fontWeight: FontWeight.w600,
                                             color: HexColor(
@@ -180,9 +178,38 @@ class _VerifyPinScreenState extends State<VerifyPinScreen> {
                                 ),
                               ),
                       ),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Get.to(() => FingerPrintScreen());
+                        },
+                        icon: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                  AppLocalizations.of(context)!.continue_with_fingerprint,
+                              style:
+                                  Theme.of(context).textTheme.titleMedium!.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Icon(
+                              Icons.fingerprint_outlined,
+                              color: HexColor(
+                                AppTheme.primaryColorString!,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),

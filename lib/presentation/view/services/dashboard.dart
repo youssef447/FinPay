@@ -86,10 +86,7 @@ class _ServicesDashBoardState extends State<ServicesDashBoard> {
                             alignment: Alignment.topRight,
                             children: [
                               TraderList(
-                                color: AppTheme.isLightTheme == false
-                                    ? const Color(0xff211F32)
-                                    : HexColor(AppTheme.primaryColorString!)
-                                        .withOpacity(0.9),
+                               
                                 title: widget.servicesController.services.value!
                                     .provider.myServices[index].name,
                                 subtitle: Column(
@@ -108,7 +105,7 @@ class _ServicesDashBoardState extends State<ServicesDashBoard> {
                                           .description,
                                       style: Theme.of(Get.context!)
                                           .textTheme
-                                          .caption!
+                                          .titleLarge!
                                           .copyWith(
                                             fontSize: 10,
                                             fontWeight: FontWeight.w400,
@@ -125,7 +122,7 @@ class _ServicesDashBoardState extends State<ServicesDashBoard> {
                                           '${AppLocalizations.of(context)!.city} :',
                                           style: Theme.of(Get.context!)
                                               .textTheme
-                                              .caption!
+                                              .titleLarge!
                                               .copyWith(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w600,
@@ -142,7 +139,7 @@ class _ServicesDashBoardState extends State<ServicesDashBoard> {
                                               .city,
                                           style: Theme.of(Get.context!)
                                               .textTheme
-                                              .caption!
+                                              .titleLarge!
                                               .copyWith(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400,
@@ -289,8 +286,10 @@ class _ServicesDashBoardState extends State<ServicesDashBoard> {
                                                   .provider
                                                   .myServices[index]
                                                   .active
-                                              ? 'Deactivate'
-                                              : 'Activate',
+                                              ? AppLocalizations.of(context)!
+                                                  .deactivate
+                                              : AppLocalizations.of(context)!
+                                                  .activate,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall,
@@ -305,7 +304,8 @@ class _ServicesDashBoardState extends State<ServicesDashBoard> {
                                               color: Colors.red,
                                             ),
                                             Text(
-                                              'Delete',
+                                              AppLocalizations.of(context)!
+                                                  .delete,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodySmall,
@@ -319,13 +319,14 @@ class _ServicesDashBoardState extends State<ServicesDashBoard> {
                               ),
                               Positioned(
                                 bottom: 3,
-                                right: language=='ar'?null: 15,
-                                left: language=='ar'?15:null,
+                                right: language == 'ar' ? null : 15,
+                                left: language == 'ar' ? 15 : null,
                                 child: Text(
                                   widget.servicesController.services.value!
                                           .provider.myServices[index].active
                                       ? AppLocalizations.of(context)!.activated
-                                      : AppLocalizations.of(context)!.deactivated,
+                                      : AppLocalizations.of(context)!
+                                          .deactivated,
                                   style: Theme.of(Get.context!)
                                       .textTheme
                                       .titleSmall!

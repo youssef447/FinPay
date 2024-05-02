@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:finpay/core/utils/globales.dart';
 import 'package:finpay/core/utils/validation_helper.dart';
 import 'package:finpay/core/style/images_asset.dart';
 import 'package:finpay/presentation/controller/login_controller.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../core/style/textstyle.dart';
 import '../../../widgets/indicator_loading.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -68,12 +70,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // const Icon(Icons.arrow_back),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      DefaultImages.finalLogo,
+                      height: 110,
+                    ),
+                  ),
                   const SizedBox(
-                    height: 38,
+                    height: 10,
                   ),
                   Text(
-                    "Hi Welcome Back!",
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                    AppLocalizations.of(context)!.hi_welcome_msg,
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: 24,
                         ),
@@ -82,8 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 4,
                   ),
                   Text(
-                    "Sign in to your account",
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    AppLocalizations.of(context)!.sign_in_msg,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                           color: const Color(0xffA2A0A8),
@@ -113,7 +122,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           : const Color(0xffA2A0A8),
                                     ),
                                   ),
-                                  hintText: "Email Address",
+                                  hintText: AppLocalizations.of(context)!
+                                      .email_address,
                                   inputType: TextInputType.emailAddress,
                                   textEditingController:
                                       loginController.emailController.value,
@@ -127,7 +137,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               const SizedBox(height: 24),
                               Obx(() {
                                 return CustomTextFormField(
-                                  
                                   focusNode: _focusNodes[1],
                                   sufix: InkWell(
                                     focusColor: Colors.transparent,
@@ -156,7 +165,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           : const Color(0xffA2A0A8),
                                     ),
                                   ),
-                                  hintText: "Password",
+                                  hintText:
+                                      AppLocalizations.of(context)!.password,
                                   obscure:
                                       loginController.isVisible.value == true
                                           ? false
@@ -189,10 +199,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       );
                                     },
                                     child: Text(
-                                      "Forgot your password?",
+                                      AppLocalizations.of(context)!
+                                          .forget_password,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText2!
+                                          .bodyMedium!
                                           .copyWith(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 16,
@@ -226,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         child: customButton(
                                           HexColor(
                                               AppTheme.primaryColorString!),
-                                          "Login",
+                                          AppLocalizations.of(context)!.login,
                                           HexColor(
                                               AppTheme.secondaryColorString!),
                                           context,
@@ -250,19 +261,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text("Don’t have account?",
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .dont_have_an_account,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16,
+                                              color: const Color(0xff9CA3AF),
+                                            ),
+                                      ),
+                                      Text(
+                                          AppLocalizations.of(context)!
+                                              .sign_up_Now,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 16,
-                                                  color:
-                                                      const Color(0xff9CA3AF))),
-                                      Text(" Sign Up",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2!
+                                              .bodyMedium!
                                               .copyWith(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 16,
@@ -281,63 +297,61 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Expanded(
-                              child: Container(
-                                height: 1,
-                                color: const Color(0xffE8E8E8),
-                              ),
-                            ),
-                            const Padding(
+                                child: Divider(
+                              thickness: 0.5,
+                            )),
+                            Padding(
                               padding: EdgeInsets.only(left: 16.0, right: 16),
-                              child: Text("Or login with"),
+                              child: Text(
+                                  AppLocalizations.of(context)!.or_login_with),
                             ),
                             Expanded(
-                              child: Container(
-                                height: 1,
-                                color: const Color(0xffE8E8E8),
-                              ),
-                            )
+                                child: Divider(
+                              thickness: 0.5,
+                            )),
                           ],
                         ),
                         const SizedBox(height: 16),
                         Obx(
                           () => loginController.loadingSocialLogin.value
                               ? const IndicatorBlurLoading()
-                              : Container(
-                                  height: 56,
-                                  width: Get.width,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color(0xffE8E8E8)),
-                                    borderRadius: BorderRadius.circular(16),
-                                    color: HexColor(
-                                        AppTheme.secondaryColorString!),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 17.0),
-                                    child: Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          DefaultImages.facebook,
-                                          height: 50,
-                                          width: 40,
+                              : InkWell(
+                                  focusColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                  onTap: () {
+                                    /* loginController.socialLogin(
+                                      email: 'abdlokman123@gmail.com',
+                                      context: context,
+                                    ); */
+                                  },
+                                  child: Stack(
+                                    alignment: language == 'ar'
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Container(
+                                        clipBehavior: Clip.none,
+                                        height: 56,
+                                        width: Get.width,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.transparent,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          color: HexColor(
+                                              AppTheme.secondaryColorString!),
                                         ),
-                                        const Spacer(),
-                                        InkWell(
-                                          focusColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          splashColor: Colors.transparent,
-                                          onTap: () {
-                                            loginController.socialLogin(
-                                              email: 'abdlokman123@gmail.com',
-                                              context: context,
-                                            );
-                                          },
+                                        child: Center(
                                           child: Text(
-                                            "Login with Facebook",
+                                            AppLocalizations.of(context)!
+                                                .facebook,
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText2!
+                                                .bodyMedium!
                                                 .copyWith(
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 16,
@@ -346,12 +360,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 ),
                                           ),
                                         ),
-                                        const Spacer(),
-                                      ],
-                                    ),
+                                      ),
+                                      SvgPicture.asset(
+                                        DefaultImages.facebook,
+                                        height: 50,
+                                      ),
+                                    ],
                                   ),
                                 ),
                         ),
+                        const SizedBox(height: 16),
                       ],
                     ),
                   ),

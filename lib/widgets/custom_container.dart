@@ -6,8 +6,9 @@ import 'package:get/get.dart';
 
 class CustomButton extends StatelessWidget {
   final String? title;
+  final double?width;
   final VoidCallback? onTap;
-  const CustomButton({Key? key, this.title, this.onTap}) : super(key: key);
+  const CustomButton({Key? key, this.title, this.onTap, this.width}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class CustomButton extends StatelessWidget {
       },
       child: Container(
         height: 56,
-        width: Get.width,
+        width:width?? Get.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: HexColor(AppTheme.primaryColorString!),
@@ -25,7 +26,7 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: Text(
             title!,
-            style: Theme.of(Get.context!).textTheme.headline6!.copyWith(
+            style: Theme.of(Get.context!).textTheme.headlineLarge!.copyWith(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,

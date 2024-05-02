@@ -21,7 +21,12 @@ class UserAuthRepo {
   }) async {
     try {
       Response response = await _authService.login(
-        body: {'email': email, 'password': password},
+        body: {
+          'email': email,
+          'password': password,
+          if (fcmToken != null) 'platform': 'android',
+          if (fcmToken != null) 'platform_token': fcmToken
+        },
       );
       final decodedJson =
           json.decode(const Utf8Codec().decode(response.bodyBytes));
@@ -37,12 +42,10 @@ class UserAuthRepo {
           decodedJson['user'],
         ),
       );
-      currentUser= UserModel.fromJson(
-          decodedJson['user'],
-        );
-      return Right(
-        currentUser
+      currentUser = UserModel.fromJson(
+        decodedJson['user'],
       );
+      return Right(currentUser);
     } catch (e) {
       return left(
         ServiceFailure(e.toString()),
@@ -64,7 +67,22 @@ class UserAuthRepo {
           ServiceFailure(decodedJson['message']),
         );
       }
-      return Right(
+      await CacheHelper.saveSecureData(
+        key: 'user',
+        value: json.encode(
+          decodedJson['user'],
+        ),
+      );
+      currentUser = UserModel.fromJson(
+        decodedJson['user'],
+      );
+      return Right(currentUser);
+    } catch (e) {
+      return left(
+        ServiceFailure(e.toString()),
+      );
+    }
+    /*  return Right(
         UserModel.fromJson(
           decodedJson['user'],
         ),
@@ -75,7 +93,7 @@ class UserAuthRepo {
           e.toString(),
         ),
       );
-    }
+    } */
   }
 
   Future<Either<Failure, String>> logup({

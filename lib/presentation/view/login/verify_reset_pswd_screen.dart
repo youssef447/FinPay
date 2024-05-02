@@ -5,6 +5,7 @@ import 'package:finpay/widgets/indicator_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../widgets/custom_button.dart';
 import '../../controller/pass_reset_controller.dart';
@@ -72,9 +73,9 @@ class _VerifyResetPswdScreenState extends State<VerifyResetPswdScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "Verify your identity",
+                        AppLocalizations.of(context)!.verify_your_identity,
                         style:
-                            Theme.of(context).textTheme.headline6!.copyWith(
+                            Theme.of(context).textTheme.headlineLarge!.copyWith(
                                   fontWeight: FontWeight.w800,
                                   fontSize: 24,
                                 ),
@@ -83,9 +84,9 @@ class _VerifyResetPswdScreenState extends State<VerifyResetPswdScreen> {
                         height: 4,
                       ),
                       Text(
-                        "We have just sent a code to",
+                         AppLocalizations.of(context)!.we_sent_code_to,
                         style:
-                            Theme.of(context).textTheme.bodyText2!.copyWith(
+                            Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
                                   color: Color(0xffA2A0A8),
@@ -97,7 +98,7 @@ class _VerifyResetPswdScreenState extends State<VerifyResetPswdScreen> {
                       Text(
                         widget.email,
                         style:
-                            Theme.of(context).textTheme.bodyText2!.copyWith(
+                            Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16,
                                 ),
@@ -113,7 +114,7 @@ class _VerifyResetPswdScreenState extends State<VerifyResetPswdScreen> {
                           length: 6,
                           validator: (val) {
                             if (val!.length < 6) {
-                              return 'Please fill the 6 fields';
+                              return AppLocalizations.of(context)!.pin_fill_msg;
                             }
                             return null;
                           },
@@ -138,7 +139,7 @@ class _VerifyResetPswdScreenState extends State<VerifyResetPswdScreen> {
                                 },
                                 child: customButton(
                                   HexColor(AppTheme.primaryColorString!),
-                                  "Continue",
+                                  AppLocalizations.of(context)!.continue_,
                                   HexColor(AppTheme.secondaryColorString!),
                                   context,
                                 ),
@@ -151,9 +152,9 @@ class _VerifyResetPswdScreenState extends State<VerifyResetPswdScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'didn\'t recieve email ?',
+                            AppLocalizations.of(context)!.didnt_recieve_email,
                             style:
-                                Theme.of(context).textTheme.caption!.copyWith(
+                                Theme.of(context).textTheme.titleMedium!.copyWith(
                                       fontWeight: FontWeight.w600,
                                     ),
                           ),
@@ -171,10 +172,10 @@ class _VerifyResetPswdScreenState extends State<VerifyResetPswdScreen> {
                                       );
                                     },
                                     child: Text(
-                                      'Resend',
+                                     AppLocalizations.of(context)!.resend,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .caption!
+                                          .titleMedium!
                                           .copyWith(
                                             fontWeight: FontWeight.w600,
                                             color: HexColor(

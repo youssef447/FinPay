@@ -34,16 +34,16 @@ class DashBoard extends StatelessWidget {
                   ? FloatingActionButton(
                       onPressed: () {
                         Get.defaultDialog(
-                          title: 'Confirm',
-                          middleText:
-                              'Are you sure you want to activate all your trades',
+                          title: AppLocalizations.of(context)!.confirm,
+                          middleText: AppLocalizations.of(context)!
+                              .all_trades_activate_msg,
                           cancel: GestureDetector(
                             onTap: () {
                               Get.back();
                             },
                             child: customButton(
                               Colors.red,
-                              'cancel',
+                              AppLocalizations.of(context)!.cancel,
                               HexColor(AppTheme.secondaryColorString!),
                               context,
                               width: 100,
@@ -57,7 +57,7 @@ class DashBoard extends StatelessWidget {
                             },
                             child: customButton(
                               HexColor(AppTheme.primaryColorString!),
-                              'Yes',
+                              AppLocalizations.of(context)!.yes,
                               HexColor(AppTheme.secondaryColorString!),
                               context,
                               width: 100,
@@ -83,16 +83,16 @@ class DashBoard extends StatelessWidget {
                       heroTag: 'deactivate',
                       onPressed: () {
                         Get.defaultDialog(
-                          title: 'Confirm',
-                          middleText:
-                              'Are you sure you want to deactivate all your trades',
+                          title: AppLocalizations.of(context)!.confirm,
+                          middleText: AppLocalizations.of(context)!
+                              .all_trades_deactivate_msg,
                           cancel: GestureDetector(
                             onTap: () {
                               Get.back();
                             },
                             child: customButton(
                               Colors.red,
-                              'cancel',
+                              AppLocalizations.of(context)!.cancel,
                               HexColor(AppTheme.secondaryColorString!),
                               context,
                               width: 100,
@@ -107,7 +107,7 @@ class DashBoard extends StatelessWidget {
                             },
                             child: customButton(
                               HexColor(AppTheme.primaryColorString!),
-                              'Yes',
+                              AppLocalizations.of(context)!.yes,
                               HexColor(AppTheme.secondaryColorString!),
                               context,
                               width: 100,
@@ -127,17 +127,21 @@ class DashBoard extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              FloatingActionButton(
-                heroTag: 'add',
-                onPressed: () {
-                  Get.bottomSheet(
-                    const AddTradeScreen(),
-                  );
-                },
-                shape: const CircleBorder(),
-                backgroundColor: HexColor(AppTheme.primaryColorString!),
-                child: const Icon(Icons.add),
-              ),
+              tradeController.walletsList.isEmpty
+                  ? const SizedBox()
+                  : FloatingActionButton(
+                      heroTag: 'add',
+                      onPressed: () {
+                        Get.bottomSheet(
+                          const AddTradeScreen(),
+                        );
+                      },
+                      shape: const CircleBorder(),
+                      backgroundColor: HexColor(
+                        AppTheme.primaryColorString!,
+                      ),
+                      child: const Icon(Icons.add),
+                    ),
             ],
           ),
         ),
@@ -147,7 +151,7 @@ class DashBoard extends StatelessWidget {
           : Colors.white,
       appBar: AppBar(
         title: Text(
-          'My Tradements',
+          AppLocalizations.of(context)!.my_trades,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.w500,
               ),
@@ -162,7 +166,7 @@ class DashBoard extends StatelessWidget {
               ? Center(
                   child: Text(
                     AppLocalizations.of(context)!.no_trades,
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
                   ),
@@ -177,6 +181,7 @@ class DashBoard extends StatelessWidget {
                             alignment: Alignment.topRight,
                             children: [
                               TraderList(
+                                dashboard: true,
                                 activated: tradeController.traderModel.value!
                                     .myServices[index].active,
                                 /*  image: tradeController.traderModel.value!
@@ -194,7 +199,7 @@ class DashBoard extends StatelessWidget {
                                           maxLines: 2,
                                           style: Theme.of(Get.context!)
                                               .textTheme
-                                              .caption!
+                                              .titleLarge!
                                               .copyWith(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
@@ -210,7 +215,7 @@ class DashBoard extends StatelessWidget {
                                           maxLines: 2,
                                           style: Theme.of(Get.context!)
                                               .textTheme
-                                              .caption!
+                                              .titleLarge!
                                               .copyWith(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
@@ -227,7 +232,7 @@ class DashBoard extends StatelessWidget {
                                           maxLines: 2,
                                           style: Theme.of(Get.context!)
                                               .textTheme
-                                              .caption!
+                                              .titleLarge!
                                               .copyWith(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
@@ -243,7 +248,7 @@ class DashBoard extends StatelessWidget {
                                           maxLines: 2,
                                           style: Theme.of(Get.context!)
                                               .textTheme
-                                              .caption!
+                                              .titleLarge!
                                               .copyWith(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,
@@ -260,8 +265,8 @@ class DashBoard extends StatelessWidget {
                               ),
                               Positioned(
                                 top: -10,
-                                right: language == 'ar' ? null: -7,
-                                left:language == 'ar' ? -7:null,
+                                right: language == 'ar' ? null : -7,
+                                left: language == 'ar' ? -7 : null,
                                 child: PopupMenuButton(
                                   onSelected: (value) {
                                     if (value == 1) {
@@ -279,20 +284,25 @@ class DashBoard extends StatelessWidget {
                                       );
                                     } else if (value == 0) {
                                       Get.defaultDialog(
-                                        title: 'Confirm',
+                                        title: AppLocalizations.of(context)!
+                                            .confirm,
                                         middleText: tradeController.traderModel
                                                 .value!.myServices[index].active
-                                            ? 'Are you sure you want to deactivate this trade'
-                                            : 'Are you sure you want to activate this trade',
+                                            ? AppLocalizations.of(context)!
+                                                .one_trade_deactivate_msg
+                                            : AppLocalizations.of(context)!
+                                                .one_trade_activate_msg,
                                         cancel: GestureDetector(
                                           onTap: () {
                                             Get.back();
                                           },
                                           child: customButton(
                                             Colors.red,
-                                            'cancel',
+                                            AppLocalizations.of(context)!
+                                                .cancel,
                                             HexColor(
-                                                AppTheme.secondaryColorString!),
+                                              AppTheme.secondaryColorString!,
+                                            ),
                                             context,
                                             width: 100,
                                             height: 40,
@@ -306,29 +316,28 @@ class DashBoard extends StatelessWidget {
                                                     .myServices[index].active
                                                 ? tradeController
                                                     .deactivateTradeService(
-                                                        tradeId:
-                                                            tradeController
-                                                                .traderModel
-                                                                .value!
-                                                                .myServices[
-                                                                    index]
-                                                                .id
-                                                                .toString(),
-                                                        context: context)
-                                                : tradeController
-                                                    .activateTradeService(
                                                         tradeId: tradeController
                                                             .traderModel
                                                             .value!
                                                             .myServices[index]
                                                             .id
                                                             .toString(),
-                                                        context: context);
+                                                        context: context)
+                                                : tradeController
+                                                    .activateTradeService(
+                                                    tradeId: tradeController
+                                                        .traderModel
+                                                        .value!
+                                                        .myServices[index]
+                                                        .id
+                                                        .toString(),
+                                                    context: context,
+                                                  );
                                           },
                                           child: customButton(
                                             HexColor(
                                                 AppTheme.primaryColorString!),
-                                            'Yes',
+                                            AppLocalizations.of(context)!.yes,
                                             HexColor(
                                                 AppTheme.secondaryColorString!),
                                             context,
@@ -342,16 +351,19 @@ class DashBoard extends StatelessWidget {
                                       );
                                     } else {
                                       Get.defaultDialog(
-                                        title: 'Confirm',
+                                        title: AppLocalizations.of(context)!
+                                            .confirm,
                                         middleText:
-                                            'Are you sure you want to delete this trade',
+                                            AppLocalizations.of(context)!
+                                                .delete_trade_msg,
                                         cancel: GestureDetector(
                                           onTap: () {
                                             Get.back();
                                           },
                                           child: customButton(
                                             Colors.red,
-                                            'cancel',
+                                            AppLocalizations.of(context)!
+                                                .cancel,
                                             HexColor(
                                                 AppTheme.secondaryColorString!),
                                             context,
@@ -376,7 +388,7 @@ class DashBoard extends StatelessWidget {
                                           child: customButton(
                                             HexColor(
                                                 AppTheme.primaryColorString!),
-                                            'Yes',
+                                            AppLocalizations.of(context)!.yes,
                                             HexColor(
                                                 AppTheme.secondaryColorString!),
                                             context,
@@ -401,8 +413,10 @@ class DashBoard extends StatelessWidget {
                                         child: Text(
                                           tradeController.traderModel.value!
                                                   .myServices[index].active
-                                              ? 'Deactivate'
-                                              : 'Activate',
+                                              ? AppLocalizations.of(context)!
+                                                  .deactivate
+                                              : AppLocalizations.of(context)!
+                                                  .activate,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall,
@@ -417,7 +431,8 @@ class DashBoard extends StatelessWidget {
                                                 color: Colors.green,
                                               ),
                                               Text(
-                                                'Edit',
+                                                AppLocalizations.of(context)!
+                                                    .edit,
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodySmall,
@@ -433,7 +448,8 @@ class DashBoard extends StatelessWidget {
                                               color: Colors.red,
                                             ),
                                             Text(
-                                              'Delete',
+                                              AppLocalizations.of(context)!
+                                                  .delete,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodySmall,
@@ -447,9 +463,11 @@ class DashBoard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          separatorBuilder: (context, index) => const SizedBox(
-                            height: 15,
-                          ),
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              height: 15,
+                            );
+                          },
                           itemCount: tradeController
                               .traderModel.value!.myServices.length,
                         ),

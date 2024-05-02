@@ -6,7 +6,7 @@ import 'package:finpay/core/animations/fade_down_up.dart';
 import 'package:finpay/core/style/images_asset.dart';
 import 'package:finpay/core/style/textstyle.dart';
 import 'package:finpay/core/utils/default_snackbar.dart';
-import 'package:finpay/presentation/view/tab_screen.dart';
+import 'package:finpay/presentation/controller/home_controller.dart';
 import 'package:finpay/widgets/indicator_loading.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -17,6 +17,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../widgets/custom_button.dart';
 
@@ -70,12 +71,12 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
           },
           child: Icon(
             Icons.arrow_back,
-            color: Theme.of(context).textTheme.headline6!.color,
+            color: Theme.of(context).textTheme.headlineLarge!.color,
           ),
         ),
         title: Text(
-          "Transfer Success",
-          style: Theme.of(context).textTheme.headline6!.copyWith(
+          AppLocalizations.of(context)!.transfere_success,
+          style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
               ),
@@ -128,7 +129,7 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                       : "#${widget.txnNumber}",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .caption!
+                                      .titleLarge!
                                       .copyWith(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
@@ -139,29 +140,35 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                         onPressed: () {
                                           Clipboard.setData(
                                             ClipboardData(
-                                                text: widget.txnNumber),
+                                              text: widget.txnNumber,
+                                            ),
                                           );
                                         },
                                         child: Text(
-                                          'copy to clipboard',
+                                          AppLocalizations.of(context)!.copy,
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleLarge!
                                               .copyWith(
-                                                  letterSpacing: 1,
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: const Color.fromARGB(
-                                                      255, 54, 81, 74)),
+                                                letterSpacing: 1,
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.bold,
+                                                color: const Color.fromARGB(
+                                                  255,
+                                                  54,
+                                                  81,
+                                                  74,
+                                                ),
+                                              ),
                                         ),
-                                      ):const SizedBox()
-                                     ,
+                                      )
+                                    : const SizedBox(),
                                 const SizedBox(width: 16),
                                 Text(
                                   '${widget.amountCurrency} ${widget.money}',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText1!
+                                      .bodySmall!
                                       .copyWith(
                                           fontSize: 28,
                                           fontWeight: FontWeight.w800,
@@ -173,10 +180,10 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Recipient",
+                                      AppLocalizations.of(context)!.receiver,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodySmall!
                                           .copyWith(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400,
@@ -187,7 +194,7 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                       widget.recipient,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodySmall!
                                           .copyWith(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
@@ -202,10 +209,11 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                 Row(
                                   children: [
                                     Text(
-                                      "Transfer with",
+                                      AppLocalizations.of(context)!
+                                          .transfer_with,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodySmall!
                                           .copyWith(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400,
@@ -222,7 +230,7 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                       widget.wallet,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .caption!
+                                          .titleLarge!
                                           .copyWith(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
@@ -241,10 +249,11 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Transfer Amount",
+                                      AppLocalizations.of(context)!
+                                          .transfer_amount,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodySmall!
                                           .copyWith(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400,
@@ -254,7 +263,7 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                       '${widget.amountCurrency} ${widget.money}',
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodySmall!
                                           .copyWith(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
@@ -273,10 +282,10 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Date",
+                                      AppLocalizations.of(context)!.date,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodySmall!
                                           .copyWith(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400,
@@ -286,7 +295,7 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                       date,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodySmall!
                                           .copyWith(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
@@ -305,10 +314,10 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Time",
+                                      AppLocalizations.of(context)!.time,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodySmall!
                                           .copyWith(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w400,
@@ -318,7 +327,7 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                                       time,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyText1!
+                                          .bodySmall!
                                           .copyWith(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w600,
@@ -383,13 +392,20 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.offAll(
+                      Get.find<HomeController>().customInit(context);
+                      /* Get.offAll(()=>
                         const TabScreen(),
-                      );
+                      );                       Get.back();
+                      Get.back();
+                      */
+                     
+                       Get.until((route) => route.isFirst );
                     },
+
+
                     child: customButton(
                       HexColor(AppTheme.primaryColorString!),
-                      'Done',
+                      AppLocalizations.of(context)!.done,
                       HexColor(AppTheme.secondaryColorString!),
                       context,
                       width: Get.width / 3,
@@ -436,7 +452,9 @@ class _TransferSucessScreenState extends State<TransferSucessScreen> {
       });
       if (mounted) {
         DefaultSnackbar.snackBar(
-            context: context, message: 'error sharing reciept');
+          context: context,
+          message: AppLocalizations.of(context)!.error_sharing,
+        );
       }
     }
   }

@@ -100,13 +100,13 @@ class PasswordResetController extends GetxController {
     }, (r) {
       Get.to(
         () => resetPin ?? false
-            ? CreatePinScreen(
-                resetPin: resetPin,
-              )
+            ? CreatePinScreen()
             : transfere ?? false
                 ? CreatePinScreen(
                     transfere: transfere,
                   )
+
+                ///normal forgot pswd screen
                 : ResetPasswordScreen(
                     email: email,
                     code: code,

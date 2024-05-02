@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import '../core/style/textstyle.dart';
 
 class IndicatorBlurLoading extends StatelessWidget {
   const IndicatorBlurLoading({super.key});
@@ -15,9 +14,7 @@ class IndicatorBlurLoading extends StatelessWidget {
         sigmaY: 2,
       ),
       child: CircularProgressIndicator.adaptive(
-        backgroundColor: HexColor(
-          AppTheme.primaryColorString!,
-        ),
+        
       ),
     );
   }

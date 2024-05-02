@@ -172,4 +172,45 @@ class UserServices {
     );
   }
 
+  Future<Response> getBookingList({Map<String, dynamic>? query}) async {
+    return await HttpHelper.getData(
+      query: query,
+      endPointUrl: '${ApiEndPoints.usersEndPoint}/members-book.php',
+      userToken: currentUser.token,
+    );
+  }
+
+  ///member_username, member_nick_name
+  Future<Response> addToBookingList(
+      {required Map<String, dynamic> body}) async {
+    return await HttpHelper.postData(
+      data: body,
+      endPointUrl: '${ApiEndPoints.usersEndPoint}/members-book-add.php',
+      userToken: currentUser.token,
+    );
+  }
+
+  ///body :member_nick_name,query: member_id
+  Future<Response> editToBookingList({
+    required Map<String, dynamic> body,
+    required Map<String, dynamic> query,
+  }) async {
+    return await HttpHelper.postData(
+      data: body,
+      query: query,
+      endPointUrl: '${ApiEndPoints.usersEndPoint}/members-book-edit.php',
+      userToken: currentUser.token,
+    );
+  }
+
+  ///query: member_id
+  Future<Response> deleteFromBookingList({
+    required Map<String, dynamic> query,
+  }) async {
+    return await HttpHelper.postData(
+      query: query,
+      endPointUrl: '${ApiEndPoints.usersEndPoint}/members-book-delete.php',
+      userToken: currentUser.token,
+    );
+  }
 }

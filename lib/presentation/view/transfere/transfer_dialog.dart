@@ -53,8 +53,8 @@ Widget transferDialog({
                   ),
                 ),
                 Text(
-                  "Confirm",
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  AppLocalizations.of(context)!.confirm,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
                       ),
@@ -80,15 +80,15 @@ Widget transferDialog({
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                   AppLocalizations.of(context)!.receiver,
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  AppLocalizations.of(context)!.receiver,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xffA2A0A8)),
                 ),
                 Text(
                   '#$recipient',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -99,7 +99,7 @@ Widget transferDialog({
             Divider(
               color: Theme.of(context)
                   .textTheme
-                  .headline6!
+                  .headlineLarge!
                   .color!
                   .withOpacity(0.08),
             ),
@@ -108,8 +108,8 @@ Widget transferDialog({
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Transfer with",
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  AppLocalizations.of(context)!.transfer_with,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xffA2A0A8)),
@@ -117,14 +117,14 @@ Widget transferDialog({
                 Row(
                   children: [
                     SvgPicture.asset(
-                      DefaultImages.creditcard1,
+                      DefaultImages.card,
                       height: 24,
                       width: 24,
                     ),
                     const SizedBox(width: 5),
                     Text(
                       wallet,
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
@@ -137,7 +137,7 @@ Widget transferDialog({
             Divider(
               color: Theme.of(context)
                   .textTheme
-                  .headline6!
+                  .headlineLarge!
                   .color!
                   .withOpacity(0.08),
             ),
@@ -146,15 +146,15 @@ Widget transferDialog({
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Transfer Amount",
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  AppLocalizations.of(context)!.transfer_amount,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xffA2A0A8)),
                 ),
                 Text(
                   '$amountCurrency $amount',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -165,7 +165,7 @@ Widget transferDialog({
             Divider(
               color: Theme.of(context)
                   .textTheme
-                  .headline6!
+                  .headlineLarge!
                   .color!
                   .withOpacity(0.08),
             ),
@@ -174,26 +174,15 @@ Widget transferDialog({
               () => homeController.loadingTrasnfere.value
                   ? const IndicatorBlurLoading()
                   : CustomButton(
-                      title:  AppLocalizations.of(context)!.pay,
+                      title: AppLocalizations.of(context)!.pay,
                       onTap: () async {
                         if (currentUser.pinCodeRequired == 1) {
+                         // Get.back();
                           final bool? verified = await Get.to(
-                              () =>
-
-                                  /* backgroundColor: AppTheme.isLightTheme == false
-                                ? Colors.black
-                                : Colors.white,
-                            clipBehavior: Clip.hardEdge,
-                            ignoreSafeArea: false,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(25),
-                                topRight: Radius.circular(25),
-                              ),
-                            ), */
-                                  const TransferePinScreen(),
-                              transition: Transition.downToUp,
-                              duration: const Duration(milliseconds: 500));
+                            () => const TransferePinScreen(),
+                            transition: Transition.downToUp,
+                            duration: const Duration(milliseconds: 500),
+                          );
                           if (verified ?? false) {
                             if (context.mounted) {
                               homeController.trasnfereMoney(

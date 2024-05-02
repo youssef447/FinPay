@@ -35,7 +35,7 @@ class FieldServices extends StatelessWidget {
         title: AutoSizeText(
           '$name Services',
           maxLines: 2,
-          style: Theme.of(Get.context!).textTheme.caption!.copyWith(
+          style: Theme.of(Get.context!).textTheme.titleLarge!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
               ),
@@ -91,10 +91,7 @@ class FieldServices extends StatelessWidget {
                                     );
                                   },
                                   child: TraderList(
-                                    color: AppTheme.isLightTheme == false
-                                        ? const Color(0xff211F32)
-                                        : HexColor(AppTheme.primaryColorString!)
-                                            .withOpacity(0.9),
+                              
                                     title: servicesController
                                         .servicesDetails[index].name,
                                     subtitle: Column(
@@ -105,9 +102,11 @@ class FieldServices extends StatelessWidget {
                                           servicesController
                                               .servicesDetails[index]
                                               .description,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
                                           style: Theme.of(Get.context!)
                                               .textTheme
-                                              .caption!
+                                              .titleLarge!
                                               .copyWith(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w400,
@@ -123,7 +122,7 @@ class FieldServices extends StatelessWidget {
                                               'City :',
                                               style: Theme.of(Get.context!)
                                                   .textTheme
-                                                  .caption!
+                                                  .titleLarge!
                                                   .copyWith(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w600,
@@ -135,7 +134,7 @@ class FieldServices extends StatelessWidget {
                                                   .servicesDetails[index].city,
                                               style: Theme.of(Get.context!)
                                                   .textTheme
-                                                  .caption!
+                                                  .titleLarge!
                                                   .copyWith(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w400,

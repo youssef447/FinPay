@@ -3,9 +3,9 @@
 import 'package:finpay/core/style/images_asset.dart';
 import 'package:finpay/core/style/textstyle.dart';
 import 'package:finpay/presentation/controller/profile_controller.dart';
-import 'package:finpay/main.dart';
 import 'package:finpay/presentation/view/login/reset_pswd_screen.dart';
-import 'package:finpay/presentation/view/profile/groups/groups_screen.dart';
+import 'package:finpay/presentation/view/profile/settings/all%20transacions/transactions_all_list.dart';
+import 'package:finpay/presentation/view/profile/settings/groups/groups_screen.dart';
 import 'package:finpay/presentation/view/profile/widget/custom_row.dart';
 import 'package:finpay/presentation/view/profile/widget/notification_view.dart';
 import 'package:finpay/presentation/view/profile/widget/social_view.dart';
@@ -14,7 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/home_controller.dart';
-import '../tickets/tickets_screen.dart';
+import 'members book/members_book_screen.dart';
+import 'tickets/tickets_screen.dart';
 import '../transaction_inquire_details.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -41,7 +42,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int light = 1;
+    /*   int light = 1;
     int dark = 2;
     changeColor(int color) {
       if (color == light) {
@@ -50,7 +51,7 @@ class _SettingScreenState extends State<SettingScreen> {
         MyApp.setCustomeTheme(context, 7);
       }
     }
-
+ */
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppTheme.isLightTheme == false
@@ -63,7 +64,7 @@ class _SettingScreenState extends State<SettingScreen> {
           },
           child: Icon(
             Icons.arrow_back,
-            color: Theme.of(context).textTheme.headline6!.color,
+            color: Theme.of(context).textTheme.headlineLarge!.color,
           ),
         ),
       ),
@@ -85,7 +86,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   children: [
                     Text(
                       AppLocalizations.of(context)!.settings,
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                      style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
                           ),
@@ -93,13 +94,31 @@ class _SettingScreenState extends State<SettingScreen> {
                     const SizedBox(height: 32),
                     Text(
                       AppLocalizations.of(context)!.app_settings,
-                      style: Theme.of(context).textTheme.caption!.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: const Color(0xffA2A0A8),
                           ),
                     ),
                     const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () {
+                        profileController.chipChoice.value = 0;
+
+                        profileController.getAllTransactions(context: context);
+                        Get.to(
+                          () => TransactionsAllListSettings(),
+                        );
+                      },
+                      child: notificationView(
+                        context,
+                        AppLocalizations.of(context)!.all_transactions,
+                        const Icon(Icons.arrow_forward_ios),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
                     GestureDetector(
                       onTap: () {
                         Get.to(
@@ -135,7 +154,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           Text(
                             AppLocalizations.of(context)!.groups,
                             style:
-                                Theme.of(context).textTheme.bodyText2!.copyWith(
+                                Theme.of(context).textTheme.bodyMedium!.copyWith(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -143,6 +162,20 @@ class _SettingScreenState extends State<SettingScreen> {
                           const Spacer(),
                           const Icon(Icons.arrow_forward_ios),
                         ],
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                    GestureDetector(
+                      onTap: () {
+                        Get.find<HomeController>().getBookingList();
+                        Get.to(
+                          () => MembersBookScreen(),
+                        );
+                      },
+                      child: notificationView(
+                        context,
+                        AppLocalizations.of(context)!.members_book,
+                        const Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -195,7 +228,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                     Text(
                       AppLocalizations.of(context)!.general,
-                      style: Theme.of(context).textTheme.caption!.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: const Color(0xffA2A0A8),
@@ -215,7 +248,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         title: Text(
                           AppLocalizations.of(context)!.change_lang,
                           style:
-                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -230,7 +263,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               'English',
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2!
+                                  .bodyMedium!
                                   .copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
@@ -257,7 +290,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               "العربية",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2!
+                                  .bodyMedium!
                                   .copyWith(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
@@ -280,22 +313,29 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    notificationView(
-                      context,
-                      AppLocalizations.of(context)!.dark_mode,
-                      Switch.adaptive(
-                        value: profileController.darkMode.value,
-                        activeColor: HexColor(AppTheme.primaryColorString!),
-                        onChanged: (v) {
-                          setState(() {
-                            profileController.darkMode.value = v;
-                            if (v == true) {
-                              changeColor(dark);
-                            } else {
-                              changeColor(light);
-                            }
-                          });
-                        },
+                    Obx(
+                      () => notificationView(
+                        context,
+                        AppLocalizations.of(context)!.dark_mode,
+                        Switch.adaptive(
+                          value: profileController.darkMode.value,
+                          activeColor: HexColor(AppTheme.primaryColorString!),
+                          onChanged: (v) {
+                            profileController.switchTheme(
+                              val: v,
+                              context: context,
+                            );
+                            /*   setState(() {
+                              profileController.darkMode.value = v;
+
+                              if (v == true) {
+                                changeColor(dark);
+                              } else {
+                                changeColor(light);
+                              }
+                            }); */
+                          },
+                        ),
                       ),
                     ),
                     const SizedBox(height: 22),
@@ -344,7 +384,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     const SizedBox(height: 32),
                     Text(
                       AppLocalizations.of(context)!.follow_us,
-                      style: Theme.of(context).textTheme.caption!.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: const Color(0xffA2A0A8),
@@ -389,7 +429,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   AppLocalizations.of(context)!.log_out,
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline6!
+                                      .headlineLarge!
                                       .copyWith(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700,
@@ -402,8 +442,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     const SizedBox(height: 16),
                     Center(
                       child: Text(
-                        "Finpay © 2021 v1.0",
-                        style: Theme.of(context).textTheme.caption!.copyWith(
+                        "${AppLocalizations.of(context)!.pay_to_me} © 2021 v1.0",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: const Color(0xff9EA3AE),

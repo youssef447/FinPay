@@ -2,6 +2,7 @@ import 'package:finpay/config/injection.dart';
 import 'package:finpay/core/utils/default_dialog.dart';
 import 'package:finpay/data/repositories/auth_repo.dart';
 import 'package:finpay/presentation/view/signup/pin_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,20 +25,6 @@ class VerifyEmailController extends GetxController {
           code: code,
           id: userId,
         );
-    try {
-      await locators.get<UserAuthRepo>().login(
-            email: email,
-            password: pass,
-          );
-      loadingVerify.value = false;
-    } catch (e) {
-      loadingVerify.value = false;
-
-      if (context.mounted) {
-        DefaultSnackbar.snackBar(
-            context: context, message: e.toString(), title: 'failed');
-      }
-    }
 
     response.fold((l) {
       DefaultSnackbar.snackBar(
@@ -45,13 +32,29 @@ class VerifyEmailController extends GetxController {
     }, (r) {
       AwesomeDialogUtil.sucess(
         context: context,
-        body: 'email has been verified',
+        body: AppLocalizations.of(context)!.email_verified,
         title: 'Done',
         btnOkOnPress: () {
-          Get.offAll(
-            const CreatePinScreen(),
-          );
+          login(context, email: email, pass: pass);
         },
+      );
+    });
+  }
+
+  login(BuildContext ctx, {required String email, required String pass}) async {
+    final response = await locators.get<UserAuthRepo>().login(
+          email: email,
+          password: pass,
+        );
+
+    response.fold((l) {
+      if (ctx.mounted) {
+        DefaultSnackbar.snackBar(
+            context: ctx, message: l.errMessage, title: 'failed');
+      }
+    }, (r) {
+      Get.offAll(
+        const CreatePinScreen(),
       );
     });
   }
@@ -70,7 +73,7 @@ class VerifyEmailController extends GetxController {
     }, (r) {
       AwesomeDialogUtil.sucess(
         context: context,
-        body: 'code has been sent successfully',
+        body: AppLocalizations.of(context)!.code_sent_successfully,
         title: 'Done',
       );
     });

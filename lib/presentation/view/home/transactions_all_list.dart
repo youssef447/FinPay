@@ -52,9 +52,9 @@ class TransactionsAllList extends StatelessWidget {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.sort_by,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w500,
-                          color: Theme.of(context).textTheme.caption!.color,
+                          color: Theme.of(context).textTheme.titleLarge!.color,
                         ),
                   ),
                   ChipsChoice<int>.single(
@@ -93,7 +93,7 @@ class TransactionsAllList extends StatelessWidget {
                               ? AppLocalizations.of(context)!.sender
                               : AppLocalizations.of(context)!.receiver,
                           titleStyle:
-                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -116,9 +116,13 @@ class TransactionsAllList extends StatelessWidget {
                               Get.back();
                               val == 1
                                   ? controller.sortList(
-                                      v: val, sender: nameController.text)
+                                      v: val,
+                                      sender: nameController.text,
+                                    )
                                   : controller.sortList(
-                                      v: val, reciever: nameController.text);
+                                      v: val,
+                                      reciever: nameController.text,
+                                    );
                             }
                           },
                           buttonColor: AppTheme.isLightTheme
@@ -148,15 +152,15 @@ class TransactionsAllList extends StatelessWidget {
                             },
                             child: Center(
                               child: Text(
-                                'error occured, Tap to refresh',
+                                AppLocalizations.of(context)!.err,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .titleMedium!
+                                    .titleLarge!
                                     .copyWith(
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
                                           .textTheme
-                                          .caption!
+                                          .titleLarge!
                                           .color,
                                     ),
                               ),
