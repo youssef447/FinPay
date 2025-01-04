@@ -1,5 +1,5 @@
 # finpay
-<img src="https://github.com/user-attachments/assets/754a346d-6914-4a5d-a467-8624f60885a7" width="800" height="400">
+<img src="https://github.com/user-attachments/assets/754a346d-6914-4a5d-a467-8624f60885a7" width="900" height="600">
 
 Demo <br></br>
 <img src="https://github.com/youssef447/FinPay/assets/71401039/5df142b2-f0dc-4b27-aa4b-b0bc056c347a" width= "200" height="400">
